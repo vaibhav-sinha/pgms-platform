@@ -2,13 +2,11 @@ package com.pgms.admin.controller;
 
 import com.pgms.service.api.ComplaintStatusService;
 import com.pgms.shared.model.ComplaintStatus;
+import com.pgms.shared.model.ComplaintStatus;
 import com.pgms.shared.model.EntryStatus;
 import com.pgms.shared.pojo.PgmsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,11 +14,31 @@ import java.util.List;
  * Created by user-1 on 28/6/15.
  */
 @RestController
-@RequestMapping("/complaintStatus")
+@RequestMapping("/api/complaintStatus")
 public class ComplaintStatusController {
 
     @Autowired
     ComplaintStatusService complaintStatusService;
+
+    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+    public PgmsResponse<ComplaintStatus> getComplaintStatus(@PathVariable Long id) {
+        PgmsResponse<ComplaintStatus> pgmsResponse = new PgmsResponse<>();
+        if(id == null) {
+            pgmsResponse.setSuccess(false);
+            pgmsResponse.setMessage("Failed to get complaintStatus. ComplaintStatus id is null");
+            return pgmsResponse;
+        }
+        try {
+            pgmsResponse.setData(complaintStatusService.getComplaintStatus(id));
+            pgmsResponse.setSuccess(true);
+            pgmsResponse.setMessage("Successfully got complaintStatus with ID " + id);
+        }
+        catch (Exception e) {
+            pgmsResponse.setSuccess(false);
+            pgmsResponse.setMessage(e.getMessage());
+        }
+        return pgmsResponse;
+    }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public PgmsResponse<ComplaintStatus> saveComplaintStatus(@RequestBody ComplaintStatus complaintStatus) {
@@ -53,6 +71,9 @@ public class ComplaintStatusController {
             return pgmsResponse;
         }
         try {
+            if(complaintStatus.getEntryStatus() == null) {
+                complaintStatus.setEntryStatus(EntryStatus.ACTIVE);
+            }
             complaintStatusService.saveComplaintStatus(complaintStatus);
             pgmsResponse.setSuccess(true);
             pgmsResponse.setMessage("Successfully updated complaintStatus with ID " + complaintStatus.getId());
@@ -73,6 +94,7 @@ public class ComplaintStatusController {
             pgmsResponse.setMessage("Failed to delete complaintStatus. Either complaintStatus or complaintStatus id is null");
             return pgmsResponse;
         }
+        complaintStatus = complaintStatusService.getComplaintStatus(complaintStatus.getId());
         complaintStatus.setEntryStatus(EntryStatus.DELETED);
         return updateComplaintStatus(complaintStatus);
     }

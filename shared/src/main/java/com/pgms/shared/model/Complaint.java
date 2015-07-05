@@ -10,6 +10,7 @@ import java.util.Date;
  * Created by user-1 on 27/6/15.
  */
 @Data
+@Entity
 public class Complaint {
 
     @GeneratedValue
@@ -26,7 +27,10 @@ public class Complaint {
     private String description;
     private Date createdOn;
     private Date updatedOn;
+    @ManyToOne
     private Submitter submitter;
+    @ManyToOne
+    @JoinColumn
     private Location location;
     private Date targetDate;
     private Date disposalDate;

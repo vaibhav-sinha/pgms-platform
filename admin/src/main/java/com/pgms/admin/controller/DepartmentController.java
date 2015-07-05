@@ -2,13 +2,11 @@ package com.pgms.admin.controller;
 
 import com.pgms.service.api.DepartmentService;
 import com.pgms.shared.model.Department;
+import com.pgms.shared.model.Department;
 import com.pgms.shared.model.EntryStatus;
 import com.pgms.shared.pojo.PgmsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,11 +14,31 @@ import java.util.List;
  * Created by user-1 on 28/6/15.
  */
 @RestController
-@RequestMapping("/department")
+@RequestMapping("/api/department")
 public class DepartmentController {
 
     @Autowired
     DepartmentService departmentService;
+
+    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+    public PgmsResponse<Department> getDepartment(@PathVariable Long id) {
+        PgmsResponse<Department> pgmsResponse = new PgmsResponse<>();
+        if(id == null) {
+            pgmsResponse.setSuccess(false);
+            pgmsResponse.setMessage("Failed to get department. Department id is null");
+            return pgmsResponse;
+        }
+        try {
+            pgmsResponse.setData(departmentService.getDepartment(id));
+            pgmsResponse.setSuccess(true);
+            pgmsResponse.setMessage("Successfully got department with ID " + id);
+        }
+        catch (Exception e) {
+            pgmsResponse.setSuccess(false);
+            pgmsResponse.setMessage(e.getMessage());
+        }
+        return pgmsResponse;
+    }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public PgmsResponse<Department> saveDepartment(@RequestBody Department department) {
@@ -53,6 +71,9 @@ public class DepartmentController {
             return pgmsResponse;
         }
         try {
+            if(department.getEntryStatus() == null) {
+                department.setEntryStatus(EntryStatus.ACTIVE);
+            }
             departmentService.saveDepartment(department);
             pgmsResponse.setSuccess(true);
             pgmsResponse.setMessage("Successfully updated department with ID " + department.getId());
@@ -73,6 +94,7 @@ public class DepartmentController {
             pgmsResponse.setMessage("Failed to delete department. Either department or department id is null");
             return pgmsResponse;
         }
+        department = departmentService.getDepartment(department.getId());
         department.setEntryStatus(EntryStatus.DELETED);
         return updateDepartment(department);
     }

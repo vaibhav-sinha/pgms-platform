@@ -2,13 +2,11 @@ package com.pgms.admin.controller;
 
 import com.pgms.service.api.OfficerService;
 import com.pgms.shared.model.Officer;
+import com.pgms.shared.model.Officer;
 import com.pgms.shared.model.EntryStatus;
 import com.pgms.shared.pojo.PgmsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,11 +14,31 @@ import java.util.List;
  * Created by user-1 on 28/6/15.
  */
 @RestController
-@RequestMapping("/officer")
+@RequestMapping("/api/officer")
 public class OfficerController {
 
     @Autowired
     OfficerService officerService;
+
+    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+    public PgmsResponse<Officer> getOfficer(@PathVariable Long id) {
+        PgmsResponse<Officer> pgmsResponse = new PgmsResponse<>();
+        if(id == null) {
+            pgmsResponse.setSuccess(false);
+            pgmsResponse.setMessage("Failed to get officer. Officer id is null");
+            return pgmsResponse;
+        }
+        try {
+            pgmsResponse.setData(officerService.getOfficer(id));
+            pgmsResponse.setSuccess(true);
+            pgmsResponse.setMessage("Successfully got officer with ID " + id);
+        }
+        catch (Exception e) {
+            pgmsResponse.setSuccess(false);
+            pgmsResponse.setMessage(e.getMessage());
+        }
+        return pgmsResponse;
+    }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public PgmsResponse<Officer> createOfficer(@RequestBody Officer officer) {
@@ -73,6 +91,9 @@ public class OfficerController {
             return pgmsResponse;
         }
         try {
+            if(officer.getEntryStatus() == null) {
+                officer.setEntryStatus(EntryStatus.ACTIVE);
+            }
             officerService.saveOfficer(officer);
             pgmsResponse.setSuccess(true);
             pgmsResponse.setMessage("Successfully updated officer with ID " + officer.getId());
@@ -93,6 +114,7 @@ public class OfficerController {
             pgmsResponse.setMessage("Failed to delete officer. Either officer or officer id is null");
             return pgmsResponse;
         }
+        officer = officerService.getOfficer(officer.getId());
         officer.setEntryStatus(EntryStatus.DELETED);
         return updateOfficer(officer);
     }

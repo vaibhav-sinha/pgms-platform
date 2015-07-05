@@ -2,13 +2,11 @@ package com.pgms.admin.controller;
 
 import com.pgms.service.api.DesignationService;
 import com.pgms.shared.model.Designation;
+import com.pgms.shared.model.Designation;
 import com.pgms.shared.model.EntryStatus;
 import com.pgms.shared.pojo.PgmsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,11 +14,31 @@ import java.util.List;
  * Created by user-1 on 28/6/15.
  */
 @RestController
-@RequestMapping("/designation")
+@RequestMapping("/api/designation")
 public class DesignationController {
 
     @Autowired
     DesignationService designationService;
+
+    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+    public PgmsResponse<Designation> getDesignation(@PathVariable Long id) {
+        PgmsResponse<Designation> pgmsResponse = new PgmsResponse<>();
+        if(id == null) {
+            pgmsResponse.setSuccess(false);
+            pgmsResponse.setMessage("Failed to get designation. Designation id is null");
+            return pgmsResponse;
+        }
+        try {
+            pgmsResponse.setData(designationService.getDesignation(id));
+            pgmsResponse.setSuccess(true);
+            pgmsResponse.setMessage("Successfully got designation with ID " + id);
+        }
+        catch (Exception e) {
+            pgmsResponse.setSuccess(false);
+            pgmsResponse.setMessage(e.getMessage());
+        }
+        return pgmsResponse;
+    }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public PgmsResponse<Designation> saveDesignation(@RequestBody Designation designation) {
@@ -53,6 +71,9 @@ public class DesignationController {
             return pgmsResponse;
         }
         try {
+            if(designation.getEntryStatus() == null) {
+                designation.setEntryStatus(EntryStatus.ACTIVE);
+            }
             designationService.saveDesignation(designation);
             pgmsResponse.setSuccess(true);
             pgmsResponse.setMessage("Successfully updated designation with ID " + designation.getId());
@@ -73,6 +94,7 @@ public class DesignationController {
             pgmsResponse.setMessage("Failed to delete designation. Either designation or designation id is null");
             return pgmsResponse;
         }
+        designation = designationService.getDesignation(designation.getId());
         designation.setEntryStatus(EntryStatus.DELETED);
         return updateDesignation(designation);
     }

@@ -9,6 +9,7 @@ import java.util.Date;
  * Created by user-1 on 27/6/15.
  */
 @Data
+@Entity
 public class Update {
 
     @GeneratedValue

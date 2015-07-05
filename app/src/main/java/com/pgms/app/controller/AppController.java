@@ -32,12 +32,12 @@ public class AppController {
     @Autowired
     ComplaintStatusService complaintStatusService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/submit")
     public String getSubmitPage() {
         return "submit";
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "/submit", method = RequestMethod.POST)
     @ResponseBody
     public ComplaintSubmitResponse submitComplaint(@RequestBody ComplaintSubmitRequest complaintSubmitRequest) {
         Submitter submitter = submitterService.getSubmitterByEmailOrMobile(complaintSubmitRequest.getEmail(), complaintSubmitRequest.getMobile());

@@ -5,10 +5,7 @@ import com.pgms.shared.model.Action;
 import com.pgms.shared.model.EntryStatus;
 import com.pgms.shared.pojo.PgmsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,11 +13,31 @@ import java.util.List;
  * Created by user-1 on 28/6/15.
  */
 @RestController
-@RequestMapping("/action")
+@RequestMapping("/api/action")
 public class ActionController {
 
     @Autowired
     ActionService actionService;
+
+    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+    public PgmsResponse<Action> getAction(@PathVariable Long id) {
+        PgmsResponse<Action> pgmsResponse = new PgmsResponse<>();
+        if(id == null) {
+            pgmsResponse.setSuccess(false);
+            pgmsResponse.setMessage("Failed to get action. Action id is null");
+            return pgmsResponse;
+        }
+        try {
+            pgmsResponse.setData(actionService.getAction(id));
+            pgmsResponse.setSuccess(true);
+            pgmsResponse.setMessage("Successfully got action with ID " + id);
+        }
+        catch (Exception e) {
+            pgmsResponse.setSuccess(false);
+            pgmsResponse.setMessage(e.getMessage());
+        }
+        return pgmsResponse;
+    }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public PgmsResponse<Action> saveAction(@RequestBody Action action) {
@@ -53,6 +70,9 @@ public class ActionController {
             return pgmsResponse;
         }
         try {
+            if(action.getEntryStatus() == null) {
+                action.setEntryStatus(EntryStatus.ACTIVE);
+            }
             actionService.saveAction(action);
             pgmsResponse.setSuccess(true);
             pgmsResponse.setMessage("Successfully updated action with ID " + action.getId());
@@ -73,6 +93,7 @@ public class ActionController {
             pgmsResponse.setMessage("Failed to delete action. Either action or action id is null");
             return pgmsResponse;
         }
+        action = actionService.getAction(action.getId());
         action.setEntryStatus(EntryStatus.DELETED);
         return updateAction(action);
     }

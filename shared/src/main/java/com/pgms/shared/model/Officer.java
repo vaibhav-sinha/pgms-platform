@@ -9,6 +9,7 @@ import java.util.Date;
  * Created by user-1 on 27/6/15.
  */
 @Data
+@Entity
 public class Officer {
 
     @GeneratedValue
@@ -17,7 +18,11 @@ public class Officer {
     @Enumerated(value = EnumType.STRING)
     private EntryStatus entryStatus;
     private String name;
+    @ManyToOne
+    @JoinColumn
     private Designation designation;
+    @ManyToOne
+    @JoinColumn
     private Department department;
     private String username;
     private String encryptedPassword;
