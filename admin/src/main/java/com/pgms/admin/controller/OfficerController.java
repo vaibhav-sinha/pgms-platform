@@ -1,11 +1,13 @@
 package com.pgms.admin.controller;
 
+import com.pgms.admin.utils.AdminUtils;
 import com.pgms.service.api.OfficerService;
-import com.pgms.shared.model.ComplaintStatus;
+import com.pgms.shared.model.*;
 import com.pgms.shared.model.Officer;
-import com.pgms.shared.model.Officer;
-import com.pgms.shared.model.EntryStatus;
+import com.pgms.shared.pojo.OfficerCreateRequest;
+import com.pgms.shared.pojo.OfficerVO;
 import com.pgms.shared.pojo.PgmsResponse;
+import com.pgms.shared.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,9 @@ public class OfficerController {
 
     @Autowired
     OfficerService officerService;
+
+    @Autowired
+    Mapper mapper;
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
     public PgmsResponse<Officer> getOfficer(@PathVariable Long id) {
@@ -48,40 +53,28 @@ public class OfficerController {
         return pgmsResponse;
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public PgmsResponse<Officer> createOfficer(@RequestBody Officer officer) {
-        PgmsResponse<Officer> pgmsResponse = new PgmsResponse<>();
-        if(officer == null || officer.getId() != null) {
-            pgmsResponse.setSuccess(false);
-            pgmsResponse.setMessage("Failed to create officer. Either officer is null or officer id is not null");
-            return pgmsResponse;
-        }
-        try {
-            officer = officerService.createOfficer(officer);
-            pgmsResponse.setSuccess(true);
-            pgmsResponse.setMessage("Successfully saved officer with ID " + officer.getId());
-            pgmsResponse.setData(officer);
-        }
-        catch (Exception e) {
-            pgmsResponse.setSuccess(false);
-            pgmsResponse.setMessage(e.getMessage());
-        }
-        return pgmsResponse;
-    }
-
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public PgmsResponse<Officer> saveOfficer(@RequestBody Officer officer) {
-        PgmsResponse<Officer> pgmsResponse = new PgmsResponse<>();
-        if(officer == null || officer.getId() != null) {
+    public PgmsResponse<OfficerVO> saveOfficer(@RequestBody OfficerCreateRequest officer) {
+        PgmsResponse<OfficerVO> pgmsResponse = new PgmsResponse<>();
+        Officer savedOfficer;
+        if(officer == null) {
             pgmsResponse.setSuccess(false);
-            pgmsResponse.setMessage("Failed to save officer. Either officer is null or officer id is not null");
+            pgmsResponse.setMessage("Failed to save officer. Officer is null");
             return pgmsResponse;
         }
+        Officer newOfficer = mapper.map(officer, Officer.class);
+        newOfficer.setEntryStatus(EntryStatus.ACTIVE);
+        newOfficer.setAccountStatus(AccountStatus.ACTIVE);
+        String salt = AdminUtils.generateSalt();
         try {
-            officer = officerService.saveOfficer(officer);
+            String encryptedPassword = AdminUtils.encrypt(salt, officer.getPassword());
+            newOfficer.setSalt(salt);
+            newOfficer.setEncryptedPassword(encryptedPassword);
+            savedOfficer = officerService.saveOfficer(newOfficer);
             pgmsResponse.setSuccess(true);
-            pgmsResponse.setMessage("Successfully saved officer with ID " + officer.getId());
-            pgmsResponse.setData(officer);
+            pgmsResponse.setMessage("Successfully saved officer with ID " + savedOfficer.getId());
+            OfficerVO officerVO = mapper.map(savedOfficer, OfficerVO.class);
+            pgmsResponse.setData(officerVO);
         }
         catch (Exception e) {
             pgmsResponse.setSuccess(false);

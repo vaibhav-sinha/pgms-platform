@@ -8,7 +8,7 @@
     <context:annotation-config />
 
     <bean id="restAuthenticationEntryPoint" class="com.pgms.admin.security.RestAuthenticationEntryPoint" />
-
+    <bean id="mapper" class="com.pgms.shared.util.Mapper"/>
 
     <security:http auto-config='true' pattern="/api/**" create-session="stateless" entry-point-ref="restAuthenticationEntryPoint">
         <security:intercept-url pattern="/api/**" access="ROLE_USER" />
