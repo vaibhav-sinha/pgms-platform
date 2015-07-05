@@ -29,4 +29,19 @@ public class AdminController {
     public String category() {
         return "category";
     }
+
+    @RequestMapping("/location")
+    public String location() {
+        return "location";
+    }
+
+    @RequestMapping("/department")
+    public String department() {
+        return "department";
+    }
+
+    @RequestMapping("/officer")
+    public String officer() {
+        return "officer";
+    }
 }

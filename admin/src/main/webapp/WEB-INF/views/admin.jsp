@@ -15,5 +15,8 @@
 <a href="<c:url value="/ui/designation"/>">Designation</a>
 <a href="<c:url value="/ui/complaintStatus"/>">Complaint Status</a>
 <a href="<c:url value="/ui/category"/>">Category</a>
+<a href="<c:url value="/ui/location"/>">Location</a>
+<a href="<c:url value="/ui/department"/>">Department</a>
+<a href="<c:url value="/ui/officer"/>">Officer</a>
 </body>
 </html>

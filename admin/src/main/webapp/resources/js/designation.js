@@ -36,7 +36,7 @@ var controller = app.controller("designationController", function($scope, $http,
         })
     };
     $scope.selectForUpdate = function(entry) {
-        $scope.updateDesignation = entry;
+        $scope.updateDesignation = angular.copy(entry);
         $scope.switchToUpdateMode();
     };
     $scope.update = function() {

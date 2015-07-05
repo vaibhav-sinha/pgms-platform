@@ -36,7 +36,7 @@ var controller = app.controller("complaintStatusController", function($scope, $h
         })
     };
     $scope.selectForUpdate = function(entry) {
-        $scope.updateComplaintStatus = entry;
+        $scope.updateComplaintStatus = angular.copy(entry);
         $scope.switchToUpdateMode();
     };
     $scope.update = function() {

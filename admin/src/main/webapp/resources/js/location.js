@@ -2,9 +2,9 @@
  * Created by user-1 on 5/7/15.
  */
 
-var app = angular.module("categoryApp", ["base64"]);
+var app = angular.module("locationApp", ["base64"]);
 
-var controller = app.controller("categoryController", function($scope, $http, $base64) {
+var controller = app.controller("locationController", function($scope, $http, $base64) {
     //Set basic-auth headers to all requests
     $http.defaults.headers.common.Authorization = "Basic " + $base64.encode("admin" + ":" + "admin");
     //Create the UI mode control flags
@@ -12,44 +12,35 @@ var controller = app.controller("categoryController", function($scope, $http, $b
     $scope.createMode = false;
     $scope.updateMode = false;
     //Define variables
-    $scope.selectedCategory = {};
-    $scope.selectedDepartment = null;
-    $scope.newCategory = {};
+    $scope.newLocation = {};
     //Define functions
-    $scope.getAllDepartment = function() {
-        $http.get("/admin/api/department/getAllActive").success(function(data, status) {
-            $scope.departments = data.data;
-        })
-    };
     $scope.create = function() {
-        $scope.newCategory.department = angular.copy($scope.selectedDepartment);
-        $http.post("/admin/api/category/save", $scope.newCategory).success(function(data, status) {
+        $http.post("/admin/api/location/save", $scope.newLocation).success(function(data, status) {
             $scope.getAllActive();
             $scope.switchToDisplayMode();
         }).error(function(status) {
         })
     };
     $scope.getAllActive = function() {
-        $http.get("/admin/api/category/getAllActive").success(function(data, status) {
+        $http.get("/admin/api/location/getAllActive").success(function(data, status) {
             if(data.success == true) {
                 $scope.allActive = data.data;
             }
         })
     };
     $scope.delete = function(entry) {
-        $http.post("/admin/api/category/delete", entry).success(function(data, status) {
+        $http.post("/admin/api/location/delete", entry).success(function(data, status) {
             if(data.success == true) {
                 $scope.getAllActive();
             }
         })
     };
     $scope.selectForUpdate = function(entry) {
-        $scope.updateCategory = angular.copy(entry);
+        $scope.updateLocation = angular.copy(entry);
         $scope.switchToUpdateMode();
     };
     $scope.update = function() {
-        $scope.newCategory.department = angular.copy($scope.selectedDepartment);
-        $http.post("/admin/api/category/update", $scope.updateCategory).success(function(data, status) {
+        $http.post("/admin/api/location/update", $scope.updateLocation).success(function(data, status) {
             if(data.success == true) {
                 $scope.getAllActive();
                 $scope.switchToDisplayMode();
@@ -73,5 +64,4 @@ var controller = app.controller("categoryController", function($scope, $http, $b
 
     //Run on load
     $scope.getAllActive();
-    $scope.getAllDepartment();
 });
