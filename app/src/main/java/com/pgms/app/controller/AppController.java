@@ -1,13 +1,10 @@
 package com.pgms.app.controller;
 
-import com.pgms.service.api.ComplaintService;
-import com.pgms.service.api.ComplaintStatusService;
-import com.pgms.service.api.SubmitterService;
-import com.pgms.shared.model.Complaint;
-import com.pgms.shared.model.EntryStatus;
-import com.pgms.shared.model.Submitter;
+import com.pgms.service.api.*;
+import com.pgms.shared.model.*;
 import com.pgms.shared.pojo.ComplaintSubmitRequest;
 import com.pgms.shared.pojo.ComplaintSubmitResponse;
+import com.pgms.shared.pojo.PgmsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by user-1 on 27/6/15.
@@ -32,7 +30,16 @@ public class AppController {
     @Autowired
     ComplaintStatusService complaintStatusService;
 
-    @RequestMapping(value = "/submit")
+    @Autowired
+    CategoryService categoryService;
+
+    @Autowired
+    LocationService locationService;
+
+    @Autowired
+    DepartmentService departmentService;
+
+    @RequestMapping(value = "/submit", method = RequestMethod.GET)
     public String getSubmitPage() {
         return "submit";
     }
@@ -52,10 +59,12 @@ public class AppController {
         submitter = submitterService.saveSubmitter(submitter);
 
         Complaint complaint = new Complaint();
-        complaint.setCategory(complaintSubmitRequest.getCategory());
-        complaint.setDepartment(complaintSubmitRequest.getDepartment());
+        if(complaintSubmitRequest.getCategory() != null) {
+            complaint.setCategory(categoryService.getCategory(complaintSubmitRequest.getCategory().getId()));
+        }
+        complaint.setDepartment(departmentService.getDepartment(complaintSubmitRequest.getDepartment().getId()));
         complaint.setDescription(complaintSubmitRequest.getDescription());
-        complaint.setLocation(complaintSubmitRequest.getLocation());
+        complaint.setLocation(locationService.getLocation(complaintSubmitRequest.getLocation().getId()));
         complaint.setSubmitter(submitter);
         complaint.setUrgent(complaintSubmitRequest.getUrgent());
         complaint.setCreatedOn(new Date());
@@ -74,5 +83,53 @@ public class AppController {
             response.setMessage(e.getMessage());
         }
         return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getAllCategories", method = RequestMethod.GET)
+    public PgmsResponse<List<Category>> getAllCategory() {
+        PgmsResponse<List<Category>> pgmsResponse = new PgmsResponse<>();
+        try {
+            pgmsResponse.setSuccess(true);
+            pgmsResponse.setMessage("Successfully got all categories");
+            pgmsResponse.setData(categoryService.getAllCategories());
+        }
+        catch (Exception e) {
+            pgmsResponse.setSuccess(false);
+            pgmsResponse.setMessage(e.getMessage());
+        }
+        return pgmsResponse;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getAllLocations", method = RequestMethod.GET)
+    public PgmsResponse<List<Location>> getAllLocation() {
+        PgmsResponse<List<Location>> pgmsResponse = new PgmsResponse<>();
+        try {
+            pgmsResponse.setSuccess(true);
+            pgmsResponse.setMessage("Successfully got all locations");
+            pgmsResponse.setData(locationService.getAllLocation());
+        }
+        catch (Exception e) {
+            pgmsResponse.setSuccess(false);
+            pgmsResponse.setMessage(e.getMessage());
+        }
+        return pgmsResponse;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getAllDepartments", method = RequestMethod.GET)
+    public PgmsResponse<List<Department>> getAllDepartment() {
+        PgmsResponse<List<Department>> pgmsResponse = new PgmsResponse<>();
+        try {
+            pgmsResponse.setSuccess(true);
+            pgmsResponse.setMessage("Successfully got all departments");
+            pgmsResponse.setData(departmentService.getAllDepartments());
+        }
+        catch (Exception e) {
+            pgmsResponse.setSuccess(false);
+            pgmsResponse.setMessage(e.getMessage());
+        }
+        return pgmsResponse;
     }
 }

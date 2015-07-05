@@ -30,7 +30,7 @@ public class ComplaintStatusServiceImpl implements ComplaintStatusService {
 
     @Override
     public ComplaintStatus getDefaultComplaintStatus() {
-        return complaintStatusRepository.findOne(0L);
+        return complaintStatusRepository.findAll().get(0);
     }
 
     @Override

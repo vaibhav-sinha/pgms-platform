@@ -63,7 +63,7 @@ public class OfficerServiceImpl implements OfficerService {
     @Override
     public Officer login(String username, String password) {
         Officer officer = officerRepository.findByUsername(username);
-        if(officer == null) {
+        if(officer == null || officer.getEntryStatus() != EntryStatus.ACTIVE || officer.getAccountStatus() != AccountStatus.ACTIVE) {
             return null;
         }
         String encryptedPassword = encrypt(officer.getSalt(), password);

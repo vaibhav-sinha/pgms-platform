@@ -31,6 +31,7 @@ public class Officer {
     private String mobile;
     private String photoUrl;
     private Date lastSignedIn;
+    @Enumerated(value = EnumType.STRING)
     private AccountStatus accountStatus;
     private String role;
 }
