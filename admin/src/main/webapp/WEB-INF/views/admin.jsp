@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: user-1
@@ -11,6 +12,6 @@
     <title>PGMS Admin Panel</title>
 </head>
 <body>
-<a href="action">Action</a>
+<a href="<c:url value="/ui/designation"/>">DESIGNATION</a>
 </body>
 </html>

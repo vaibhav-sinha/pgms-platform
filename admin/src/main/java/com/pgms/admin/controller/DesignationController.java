@@ -1,6 +1,7 @@
 package com.pgms.admin.controller;
 
 import com.pgms.service.api.DesignationService;
+import com.pgms.shared.model.ComplaintStatus;
 import com.pgms.shared.model.Designation;
 import com.pgms.shared.model.Designation;
 import com.pgms.shared.model.EntryStatus;
@@ -29,9 +30,16 @@ public class DesignationController {
             return pgmsResponse;
         }
         try {
-            pgmsResponse.setData(designationService.getDesignation(id));
-            pgmsResponse.setSuccess(true);
-            pgmsResponse.setMessage("Successfully got designation with ID " + id);
+            Designation designation = designationService.getDesignation(id);
+            if(designation == null) {
+                pgmsResponse.setSuccess(false);
+                pgmsResponse.setMessage("Failed to get designation. Designation with id = " + id + " does not exist");
+            }
+            else {
+                pgmsResponse.setData(designation);
+                pgmsResponse.setSuccess(true);
+                pgmsResponse.setMessage("Successfully got designation with ID " + id);
+            }
         }
         catch (Exception e) {
             pgmsResponse.setSuccess(false);

@@ -7,11 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Created by user-1 on 27/6/15.
  */
 @Controller
-@RequestMapping("/ui")
+@RequestMapping("/ui/")
 public class AdminController {
 
-    @RequestMapping("/")
+    @RequestMapping("/home")
     public String admin() {
         return "admin";
+    }
+
+    @RequestMapping("/designation")
+    public String designation() {
+        return "designation";
     }
 }

@@ -1,6 +1,7 @@
 package com.pgms.admin.controller;
 
 import com.pgms.service.api.OfficerService;
+import com.pgms.shared.model.ComplaintStatus;
 import com.pgms.shared.model.Officer;
 import com.pgms.shared.model.Officer;
 import com.pgms.shared.model.EntryStatus;
@@ -29,9 +30,16 @@ public class OfficerController {
             return pgmsResponse;
         }
         try {
-            pgmsResponse.setData(officerService.getOfficer(id));
-            pgmsResponse.setSuccess(true);
-            pgmsResponse.setMessage("Successfully got officer with ID " + id);
+            Officer officer = officerService.getOfficer(id);
+            if(officer == null) {
+                pgmsResponse.setSuccess(false);
+                pgmsResponse.setMessage("Failed to get officer. Officer with id = " + id + " does not exist");
+            }
+            else {
+                pgmsResponse.setData(officer);
+                pgmsResponse.setSuccess(true);
+                pgmsResponse.setMessage("Successfully got officer with ID " + id);
+            }
         }
         catch (Exception e) {
             pgmsResponse.setSuccess(false);

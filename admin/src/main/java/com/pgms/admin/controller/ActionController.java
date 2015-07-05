@@ -2,6 +2,7 @@ package com.pgms.admin.controller;
 
 import com.pgms.service.api.ActionService;
 import com.pgms.shared.model.Action;
+import com.pgms.shared.model.ComplaintStatus;
 import com.pgms.shared.model.EntryStatus;
 import com.pgms.shared.pojo.PgmsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,16 @@ public class ActionController {
             return pgmsResponse;
         }
         try {
-            pgmsResponse.setData(actionService.getAction(id));
-            pgmsResponse.setSuccess(true);
-            pgmsResponse.setMessage("Successfully got action with ID " + id);
+            Action action = actionService.getAction(id);
+            if(action == null) {
+                pgmsResponse.setSuccess(false);
+                pgmsResponse.setMessage("Failed to get action. Action with id = " + id + " does not exist");
+            }
+            else {
+                pgmsResponse.setData(action);
+                pgmsResponse.setSuccess(true);
+                pgmsResponse.setMessage("Successfully got action with ID " + id);
+            }
         }
         catch (Exception e) {
             pgmsResponse.setSuccess(false);

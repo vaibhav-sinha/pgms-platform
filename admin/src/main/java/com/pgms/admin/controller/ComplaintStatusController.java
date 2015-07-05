@@ -29,9 +29,16 @@ public class ComplaintStatusController {
             return pgmsResponse;
         }
         try {
-            pgmsResponse.setData(complaintStatusService.getComplaintStatus(id));
-            pgmsResponse.setSuccess(true);
-            pgmsResponse.setMessage("Successfully got complaintStatus with ID " + id);
+            ComplaintStatus complaintStatus = complaintStatusService.getComplaintStatus(id);
+            if(complaintStatus == null) {
+                pgmsResponse.setSuccess(false);
+                pgmsResponse.setMessage("Failed to get complaintStatus. ComplaintStatus with id = " + id + " does not exist");
+            }
+            else {
+                pgmsResponse.setData(complaintStatus);
+                pgmsResponse.setSuccess(true);
+                pgmsResponse.setMessage("Successfully got complaintStatus with ID " + id);
+            }
         }
         catch (Exception e) {
             pgmsResponse.setSuccess(false);

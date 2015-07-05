@@ -5,18 +5,26 @@
        xmlns:security="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
-       <context:annotation-config />
+    <context:annotation-config />
 
-       <security:http auto-config='true'>
-           <security:intercept-url pattern="/ui/*" access="ROLE_USER" />
-           <security:form-login />
-       </security:http>
+    <bean id="restAuthenticationEntryPoint" class="com.pgms.admin.security.RestAuthenticationEntryPoint" />
 
-       <security:authentication-manager>
-              <security:authentication-provider>
-                     <security:user-service>
-                            <security:user name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN" />
-                     </security:user-service>
-              </security:authentication-provider>
-       </security:authentication-manager>
+
+    <security:http auto-config='true' pattern="/api/**" create-session="stateless" entry-point-ref="restAuthenticationEntryPoint">
+        <security:intercept-url pattern="/api/**" access="ROLE_USER" />
+        <security:http-basic />
+    </security:http>
+
+    <security:http auto-config='true'>
+        <security:intercept-url pattern="/ui/*" access="ROLE_USER" />
+        <security:form-login />
+    </security:http>
+
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <security:user-service>
+                <security:user name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN" />
+            </security:user-service>
+        </security:authentication-provider>
+    </security:authentication-manager>
 </beans>

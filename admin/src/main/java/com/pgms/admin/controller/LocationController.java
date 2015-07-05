@@ -1,6 +1,7 @@
 package com.pgms.admin.controller;
 
 import com.pgms.service.api.LocationService;
+import com.pgms.shared.model.ComplaintStatus;
 import com.pgms.shared.model.Location;
 import com.pgms.shared.model.Location;
 import com.pgms.shared.model.EntryStatus;
@@ -29,9 +30,16 @@ public class LocationController {
             return pgmsResponse;
         }
         try {
-            pgmsResponse.setData(locationService.getLocation(id));
-            pgmsResponse.setSuccess(true);
-            pgmsResponse.setMessage("Successfully got location with ID " + id);
+            Location location = locationService.getLocation(id);
+            if(location == null) {
+                pgmsResponse.setSuccess(false);
+                pgmsResponse.setMessage("Failed to get location. Location with id = " + id + " does not exist");
+            }
+            else {
+                pgmsResponse.setData(location);
+                pgmsResponse.setSuccess(true);
+                pgmsResponse.setMessage("Successfully got location with ID " + id);
+            }
         }
         catch (Exception e) {
             pgmsResponse.setSuccess(false);

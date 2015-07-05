@@ -1,6 +1,7 @@
 package com.pgms.admin.controller;
 
 import com.pgms.service.api.DepartmentService;
+import com.pgms.shared.model.ComplaintStatus;
 import com.pgms.shared.model.Department;
 import com.pgms.shared.model.Department;
 import com.pgms.shared.model.EntryStatus;
@@ -29,9 +30,16 @@ public class DepartmentController {
             return pgmsResponse;
         }
         try {
-            pgmsResponse.setData(departmentService.getDepartment(id));
-            pgmsResponse.setSuccess(true);
-            pgmsResponse.setMessage("Successfully got department with ID " + id);
+            Department department = departmentService.getDepartment(id);
+            if(department == null) {
+                pgmsResponse.setSuccess(false);
+                pgmsResponse.setMessage("Failed to get department. Department with id = " + id + " does not exist");
+            }
+            else {
+                pgmsResponse.setData(department);
+                pgmsResponse.setSuccess(true);
+                pgmsResponse.setMessage("Successfully got department with ID " + id);
+            }
         }
         catch (Exception e) {
             pgmsResponse.setSuccess(false);

@@ -3,6 +3,7 @@ package com.pgms.admin.controller;
 import com.pgms.service.api.CategoryService;
 import com.pgms.shared.model.Category;
 import com.pgms.shared.model.Category;
+import com.pgms.shared.model.ComplaintStatus;
 import com.pgms.shared.model.EntryStatus;
 import com.pgms.shared.pojo.PgmsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,16 @@ public class CategoryController {
             return pgmsResponse;
         }
         try {
-            pgmsResponse.setData(categoryService.getCategory(id));
-            pgmsResponse.setSuccess(true);
-            pgmsResponse.setMessage("Successfully got category with ID " + id);
+            Category category = categoryService.getCategory(id);
+            if(category == null) {
+                pgmsResponse.setSuccess(false);
+                pgmsResponse.setMessage("Failed to get category. Category with id = " + id + " does not exist");
+            }
+            else {
+                pgmsResponse.setData(category);
+                pgmsResponse.setSuccess(true);
+                pgmsResponse.setMessage("Successfully got category with ID " + id);
+            }
         }
         catch (Exception e) {
             pgmsResponse.setSuccess(false);
