@@ -43,5 +43,18 @@ public class ComplaintStatusServiceImpl implements ComplaintStatusService {
         return complaintStatusRepository.findByEntryStatus(EntryStatus.ACTIVE);
     }
 
+    @Override
+    public List<ComplaintStatus> getAllAccessibleBy(String role) throws Exception {
+        switch (role) {
+            case "ROLE_OFFICER":
+                return complaintStatusRepository.findByOfficerCanAccess(true);
+            case "ROLE_CALL_CENTRE":
+                return complaintStatusRepository.findByCallCentreCanAccess(true);
+            case "ROLE_CMO":
+                return complaintStatusRepository.findByCmoCanAccess(true);
+        }
+        throw new Exception("A valid ROLE was not passed as parameter");
+    }
+
 
 }

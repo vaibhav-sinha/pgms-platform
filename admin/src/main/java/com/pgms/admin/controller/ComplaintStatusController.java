@@ -2,7 +2,6 @@ package com.pgms.admin.controller;
 
 import com.pgms.service.api.ComplaintStatusService;
 import com.pgms.shared.model.ComplaintStatus;
-import com.pgms.shared.model.ComplaintStatus;
 import com.pgms.shared.model.EntryStatus;
 import com.pgms.shared.pojo.PgmsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,4 +134,5 @@ public class ComplaintStatusController {
         }
         return pgmsResponse;
     }
+
 }

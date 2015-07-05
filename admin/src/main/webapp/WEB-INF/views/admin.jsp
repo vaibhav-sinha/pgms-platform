@@ -12,6 +12,8 @@
     <title>PGMS Admin Panel</title>
 </head>
 <body>
-<a href="<c:url value="/ui/designation"/>">DESIGNATION</a>
+<a href="<c:url value="/ui/designation"/>">Designation</a>
+<a href="<c:url value="/ui/complaintStatus"/>">Complaint Status</a>
+<a href="<c:url value="/ui/category"/>">Category</a>
 </body>
 </html>

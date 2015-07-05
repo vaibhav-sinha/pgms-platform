@@ -14,4 +14,5 @@ public interface ComplaintStatusService {
     ComplaintStatus getDefaultComplaintStatus();
     List<ComplaintStatus> getAllComplaintStatus();
     List<ComplaintStatus> getAllActiveComplaintStatus();
+    List<ComplaintStatus> getAllAccessibleBy(String role) throws Exception;
 }

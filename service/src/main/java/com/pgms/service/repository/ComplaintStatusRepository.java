@@ -12,4 +12,7 @@ import java.util.List;
 public interface ComplaintStatusRepository extends JpaRepository<ComplaintStatus, Long> {
 
     List<ComplaintStatus> findByEntryStatus(EntryStatus entryStatus);
+    List<ComplaintStatus> findByOfficerCanAccess(Boolean access);
+    List<ComplaintStatus> findByCallCentreCanAccess(Boolean access);
+    List<ComplaintStatus> findByCmoCanAccess(Boolean access);
 }

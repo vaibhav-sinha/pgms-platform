@@ -20,9 +20,8 @@ public class Update {
     @ManyToOne(optional = false)
     @JoinColumn
     private Complaint complaint;
-    @ManyToOne(optional = false)
-    @JoinColumn
-    private Action action;
+    @Enumerated(value = EnumType.STRING)
+    private UserAction userAction;
     @ManyToOne(optional = false)
     @JoinColumn
     private Officer officer;

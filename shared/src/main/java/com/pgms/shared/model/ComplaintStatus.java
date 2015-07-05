@@ -17,4 +17,8 @@ public class ComplaintStatus {
     @Enumerated(value = EnumType.STRING)
     private EntryStatus entryStatus;
     private String name;
+    private Boolean officerCanAccess;
+    private Boolean callCentreCanAccess;
+    private Boolean cmoCanAccess;
+
 }

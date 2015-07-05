@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Created by user-1 on 27/6/15.
  */
 @Controller
-@RequestMapping("/ui/")
+@RequestMapping("/ui")
 public class AdminController {
 
     @RequestMapping("/home")
@@ -18,5 +18,15 @@ public class AdminController {
     @RequestMapping("/designation")
     public String designation() {
         return "designation";
+    }
+
+    @RequestMapping("/complaintStatus")
+    public String complaintStatus() {
+        return "complaintStatus";
+    }
+
+    @RequestMapping("/category")
+    public String category() {
+        return "category";
     }
 }
