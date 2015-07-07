@@ -15,6 +15,11 @@ public class AdminController {
         return "admin";
     }
 
+    @RequestMapping("/index")
+    public String index() {
+        return "index";
+    }
+
     @RequestMapping("/designation")
     public String designation() {
         return "designation";
@@ -27,7 +32,7 @@ public class AdminController {
 
     @RequestMapping("/category")
     public String category() {
-        return "category";
+        return "category1";
     }
 
     @RequestMapping("/location")

@@ -3,6 +3,7 @@ package com.pgms.manager.security;
 import com.pgms.service.api.OfficerService;
 import com.pgms.shared.model.Officer;
 import com.pgms.shared.util.Mapper;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -21,6 +22,7 @@ import java.util.List;
 /**
  * Created by user-1 on 28/6/15.
  */
+@Data
 @Component
 public class UserLoginService implements AuthenticationProvider {
 
@@ -60,7 +62,7 @@ public class UserLoginService implements AuthenticationProvider {
 
     private UserDetail getUserDetail(Officer officer) {
         List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
-        grantedAuthorityList.add(new SimpleGrantedAuthority("ROLE_USER"));
+        grantedAuthorityList.add(new SimpleGrantedAuthority(officer.getRole()));
         UserDetail userDetail = new UserDetail(grantedAuthorityList);
         mapper.map(officer, userDetail);
         userDetail.setAuthenticated(true);
