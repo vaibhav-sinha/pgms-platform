@@ -15,7 +15,7 @@
     </beans:bean>
 
     <annotation-driven/>
-    <context:component-scan base-package="com.pgms.manager"/>
+    <context:component-scan base-package="com.pgms.manager.controller"/>
     <security:global-method-security jsr250-annotations="disabled" pre-post-annotations="enabled" />
 
 </beans:beans>

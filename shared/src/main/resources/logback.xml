@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+
+
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- @formatter:off -->
+            <Pattern><![CDATA[%date %X{email} %X{sync-id} %-5level [%thread] %logger{5} [%file:%line] - %msg%n]]></Pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+
+
+    <appender name="consoleAppender_ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="consoleAppender"/>
+        <queueSize>1024</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <includeCallerData>true</includeCallerData>
+    </appender>
+
+
+    <logger name="org.dozer" level="warn"/>
+    <logger name="org.hibernate" level="warn"/>
+    <logger name="org.springframework" level="DEBUG"/>
+    <logger name="org.apache" level="warn"/>
+    <logger name="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver" level="OFF" />
+    <logger name="org.springframework.remoting.support" level="OFF" />
+    <logger name="org.springframework.remoting.support.RemoteInvocationTraceInterceptor" level="OFF" />
+
+    <root>
+        <level value="DEBUG"/>
+        <appender-ref ref="consoleAppender_ASYNC"/>
+    </root>
+
+</configuration>
+

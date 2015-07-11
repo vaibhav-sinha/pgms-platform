@@ -1,5 +1,6 @@
 package com.pgms.service.repository;
 
+import com.pgms.service.entity.LocationEntity;
 import com.pgms.shared.model.Category;
 import com.pgms.shared.model.EntryStatus;
 import com.pgms.shared.model.Location;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * Created by user-1 on 27/6/15.
  */
-public interface LocationRepository extends JpaRepository<Location, Long> {
+public interface LocationRepository extends JpaRepository<LocationEntity, Long> {
 
-    List<Location> findByEntryStatus(EntryStatus entryStatus);
+    List<LocationEntity> findByEntryStatus(EntryStatus entryStatus);
 }

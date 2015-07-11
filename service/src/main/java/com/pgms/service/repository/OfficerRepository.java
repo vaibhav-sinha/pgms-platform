@@ -1,5 +1,6 @@
 package com.pgms.service.repository;
 
+import com.pgms.service.entity.OfficerEntity;
 import com.pgms.shared.model.AccountStatus;
 import com.pgms.shared.model.Category;
 import com.pgms.shared.model.EntryStatus;
@@ -11,9 +12,9 @@ import java.util.List;
 /**
  * Created by user-1 on 27/6/15.
  */
-public interface OfficerRepository extends JpaRepository<Officer, Long> {
+public interface OfficerRepository extends JpaRepository<OfficerEntity, Long> {
 
-    List<Officer> findByEntryStatus(EntryStatus entryStatus);
-    List<Officer> findByAccountStatus(AccountStatus accountStatus);
-    Officer findByUsername(String username);
+    List<OfficerEntity> findByEntryStatus(EntryStatus entryStatus);
+    List<OfficerEntity> findByAccountStatus(AccountStatus accountStatus);
+    OfficerEntity findByUsername(String username);
 }

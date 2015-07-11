@@ -10,32 +10,19 @@ import java.util.Date;
  * Created by user-1 on 27/6/15.
  */
 @Data
-@Entity
 public class Complaint {
-
-    @GeneratedValue
-    @Id
     private Long id;
-    @Enumerated(value = EnumType.STRING)
     private EntryStatus entryStatus;
-    @ManyToOne
-    @JoinColumn
     private Department department;
-    @ManyToOne
-    @JoinColumn
     private ComplaintStatus complaintStatus;
     private String description;
     private Date createdOn;
     private Date updatedOn;
-    @ManyToOne
     private Submitter submitter;
-    @ManyToOne
-    @JoinColumn
     private Location location;
     private Date targetDate;
     private Date disposalDate;
-    @ManyToOne
-    @JoinColumn
     private Category category;
     private boolean urgent;
+    private boolean reopened = false;
 }

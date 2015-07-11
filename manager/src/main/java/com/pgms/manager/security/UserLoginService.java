@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,7 +44,10 @@ public class UserLoginService implements AuthenticationProvider {
         if(officer == null) {
             throw new BadCredentialsException("Invalid username or password");
         }
-        return getUserDetail(officer);
+        UserDetail userDetail = getUserDetail(officer);
+        officer.setLastSignedIn(new Date());
+        officerService.saveOfficer(officer);
+        return userDetail;
     }
 
     public void authorize(UserDetail userDetails) {

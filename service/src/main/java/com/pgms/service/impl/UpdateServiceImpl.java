@@ -1,8 +1,10 @@
 package com.pgms.service.impl;
 
 import com.pgms.service.api.UpdateService;
+import com.pgms.service.entity.UpdateEntity;
 import com.pgms.service.repository.UpdateRepository;
 import com.pgms.shared.model.Update;
+import com.pgms.shared.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,18 +19,22 @@ public class UpdateServiceImpl implements UpdateService {
     @Autowired
     UpdateRepository updateRepository;
 
+    @Autowired
+    Mapper mapper;
+
     @Override
     public Update saveUpdate(Update update) {
-        return updateRepository.save(update);
+        UpdateEntity updateEntity = mapper.map(update, UpdateEntity.class);
+        return mapper.map(updateRepository.save(updateEntity), Update.class);
     }
 
     @Override
     public Update getUpdate(Long id) {
-        return updateRepository.findOne(id);
+        return mapper.map(updateRepository.findOne(id), Update.class);
     }
 
     @Override
     public List<Update> getAllUpdateForComplaint(Long id) {
-        return updateRepository.findUpdatesByComplaintId(id);
+        return mapper.mapAsList(updateRepository.findUpdatesByComplaintId(id), Update.class);
     }
 }
