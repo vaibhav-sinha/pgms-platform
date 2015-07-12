@@ -8,7 +8,7 @@
 
        <context:component-scan base-package="com.pgms.manager.security" />
 
-    <bean id="mapper" class="com.pgms.shared.util.Mapper"/>
+    <!--<bean id="mapper" class="com.pgms.shared.util.Mapper"/>-->
 
     <security:authentication-manager alias="authenticationManager">
         <security:authentication-provider ref="userLoginService"  />

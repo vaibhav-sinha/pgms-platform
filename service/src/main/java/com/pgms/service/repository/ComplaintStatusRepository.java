@@ -16,4 +16,5 @@ public interface ComplaintStatusRepository extends JpaRepository<ComplaintStatus
     List<ComplaintStatusEntity> findByOfficerCanAccess(Boolean access);
     List<ComplaintStatusEntity> findByCallCentreCanAccess(Boolean access);
     List<ComplaintStatusEntity> findByCmoCanAccess(Boolean access);
+    List<ComplaintStatusEntity> findByRepresentsClosed(Boolean closed);
 }

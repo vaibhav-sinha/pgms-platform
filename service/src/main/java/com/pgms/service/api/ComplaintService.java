@@ -14,4 +14,5 @@ public interface ComplaintService {
     Complaint findComplaintById(Long id);
     List<Complaint> findComplaintsForDepartment(Long id);
     List<Complaint> getComplaintsForFilter(PgmsComplaintFilter pgmsComplaintFilter);
+    Long getComplaintsCountForFilter(PgmsComplaintFilter pgmsComplaintFilter);
 }

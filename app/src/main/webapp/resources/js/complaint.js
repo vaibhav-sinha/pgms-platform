@@ -9,7 +9,9 @@ var controller = app.controller("complaintController", function($scope, $http) {
     $scope.selectedDepartment = null;
     $scope.selectedLocation = null;
     $scope.selectedCategory = null;
-    $scope.newComplaint = {};
+    $scope.newComplaint = {
+        "urgent" : false
+    };
     //Define functions
     $scope.getAllDepartment = function() {
         $http.get("/portal/getAllDepartments").success(function(data, status) {

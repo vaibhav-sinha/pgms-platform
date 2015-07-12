@@ -1,5 +1,6 @@
 package com.pgms.service.api;
 
+import com.pgms.shared.model.Complaint;
 import com.pgms.shared.model.ComplaintStatus;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public interface ComplaintStatusService {
     ComplaintStatus saveComplaintStatus(ComplaintStatus complaintStatus);
     ComplaintStatus getComplaintStatus(Long id);
     ComplaintStatus getDefaultComplaintStatus();
+    ComplaintStatus getClosedComplaintStatus();
     List<ComplaintStatus> getAllComplaintStatus();
     List<ComplaintStatus> getAllActiveComplaintStatus();
     List<ComplaintStatus> getAllAccessibleBy(String role) throws Exception;

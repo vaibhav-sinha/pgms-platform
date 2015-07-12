@@ -12,10 +12,11 @@ import java.util.Date;
 public class PgmsComplaintFilter {
     private Long departmentId;
     private Long categoryId;
+    private Long locationId;
     private Integer page = 0;
     private Integer pageSize = 20;
     private Date createdAfter;
     private Date updatedAfter;
-    private ComplaintStatus complaintStatus;
+    private Long complaintStatusId;
     private Boolean reopened;
 }

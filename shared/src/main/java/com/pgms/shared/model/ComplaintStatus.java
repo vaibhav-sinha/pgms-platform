@@ -15,5 +15,5 @@ public class ComplaintStatus {
     private Boolean officerCanAccess;
     private Boolean callCentreCanAccess;
     private Boolean cmoCanAccess;
-
+    private Boolean representsClosed;
 }

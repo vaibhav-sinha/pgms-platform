@@ -2,9 +2,7 @@ package com.pgms.service.repository;
 
 import com.pgms.service.entity.OfficerEntity;
 import com.pgms.shared.model.AccountStatus;
-import com.pgms.shared.model.Category;
 import com.pgms.shared.model.EntryStatus;
-import com.pgms.shared.model.Officer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

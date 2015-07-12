@@ -41,6 +41,12 @@ public class ComplaintStatusServiceImpl implements ComplaintStatusService {
     }
 
     @Override
+    public ComplaintStatus getClosedComplaintStatus() {
+        ComplaintStatusEntity complaintStatusEntity = complaintStatusRepository.findByRepresentsClosed(true).get(0);
+        return mapper.map(complaintStatusEntity, ComplaintStatus.class);
+    }
+
+    @Override
     public List<ComplaintStatus> getAllComplaintStatus() {
         return mapper.mapAsList(complaintStatusRepository.findAll(), ComplaintStatus.class);
     }
