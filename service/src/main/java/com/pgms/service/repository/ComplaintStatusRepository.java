@@ -13,8 +13,6 @@ import java.util.List;
 public interface ComplaintStatusRepository extends JpaRepository<ComplaintStatusEntity, Long> {
 
     List<ComplaintStatusEntity> findByEntryStatus(EntryStatus entryStatus);
-    List<ComplaintStatusEntity> findByOfficerCanAccess(Boolean access);
-    List<ComplaintStatusEntity> findByCallCentreCanAccess(Boolean access);
-    List<ComplaintStatusEntity> findByCmoCanAccess(Boolean access);
     List<ComplaintStatusEntity> findByRepresentsClosed(Boolean closed);
+    List<ComplaintStatusEntity> findByRepresentsDefault(Boolean closed);
 }

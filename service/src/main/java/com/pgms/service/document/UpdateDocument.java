@@ -17,7 +17,7 @@ import java.util.Date;
 @Document(collection = "update")
 @CompoundIndexes(
         {
-                @CompoundIndex(def = "{'complaint.id' : 1, 'complaintStatus' : 1, 'updatedOn': 1}"),
+                @CompoundIndex(def = "{'complaint.id' : 1}"),
         }
 )
 @Data
@@ -28,8 +28,12 @@ public class UpdateDocument {
     private Complaint complaint;
     private UserAction userAction;
     private Officer officer;
-    private ComplaintStatus oldStatus;
-    private ComplaintStatus newStatus;
+    private ComplaintStatus oldComplaintStatus;
+    private ComplaintStatus newComplaintStatus;
+    private VerificationStatus oldVerificationStatus;
+    private VerificationStatus newVerificationStatus;
+    private ReviewStatus oldReviewStatus;
+    private ReviewStatus newReviewStatus;
     private Department oldDepartment;
     private Department newDepartment;
     private Category oldCategory;

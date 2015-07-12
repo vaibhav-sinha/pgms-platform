@@ -15,6 +15,8 @@ public class Complaint {
     private EntryStatus entryStatus;
     private Department department;
     private ComplaintStatus complaintStatus;
+    private VerificationStatus verificationStatus;
+    private ReviewStatus reviewStatus;
     private String description;
     private Date createdOn;
     private Date updatedOn;

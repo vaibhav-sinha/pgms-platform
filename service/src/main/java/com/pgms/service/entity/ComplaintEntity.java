@@ -29,6 +29,14 @@ public class ComplaintEntity {
     @JoinColumn
     private ComplaintStatusEntity complaintStatus;
 
+    @ManyToOne
+    @JoinColumn
+    private VerificationStatusEntity verificationStatus;
+
+    @ManyToOne
+    @JoinColumn
+    private ReviewStatusEntity reviewStatus;
+
     private String description;
     private Date createdOn;
     private Date updatedOn;

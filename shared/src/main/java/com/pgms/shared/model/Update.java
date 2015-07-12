@@ -15,8 +15,12 @@ public class Update {
     private Complaint complaint;
     private UserAction userAction;
     private Officer officer;
-    private ComplaintStatus oldStatus;
-    private ComplaintStatus newStatus;
+    private ComplaintStatus oldComplaintStatus;
+    private ComplaintStatus newComplaintStatus;
+    private VerificationStatus oldVerificationStatus;
+    private VerificationStatus newVerificationStatus;
+    private ReviewStatus oldReviewStatus;
+    private ReviewStatus newReviewStatus;
     private Department oldDepartment;
     private Department newDepartment;
     private Category oldCategory;

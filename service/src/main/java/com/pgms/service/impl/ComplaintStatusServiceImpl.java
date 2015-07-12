@@ -37,7 +37,7 @@ public class ComplaintStatusServiceImpl implements ComplaintStatusService {
 
     @Override
     public ComplaintStatus getDefaultComplaintStatus() {
-        return mapper.map(complaintStatusRepository.findAll().get(0), ComplaintStatus.class);
+        return mapper.map(complaintStatusRepository.findByRepresentsDefault(true).get(0), ComplaintStatus.class);
     }
 
     @Override
@@ -55,19 +55,5 @@ public class ComplaintStatusServiceImpl implements ComplaintStatusService {
     public List<ComplaintStatus> getAllActiveComplaintStatus() {
         return mapper.mapAsList(complaintStatusRepository.findByEntryStatus(EntryStatus.ACTIVE), ComplaintStatus.class);
     }
-
-    @Override
-    public List<ComplaintStatus> getAllAccessibleBy(String role) throws Exception {
-        switch (role) {
-            case "ROLE_OFFICER":
-                return mapper.mapAsList(complaintStatusRepository.findByOfficerCanAccess(true), ComplaintStatus.class);
-            case "ROLE_CALL_CENTRE":
-                return mapper.mapAsList(complaintStatusRepository.findByCallCentreCanAccess(true), ComplaintStatus.class);
-            case "ROLE_CMO":
-                return mapper.mapAsList(complaintStatusRepository.findByCmoCanAccess(true), ComplaintStatus.class);
-        }
-        throw new Exception("A valid ROLE was not passed as parameter");
-    }
-
 
 }

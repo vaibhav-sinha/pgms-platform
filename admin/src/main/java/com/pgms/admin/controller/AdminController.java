@@ -30,6 +30,16 @@ public class AdminController {
         return "complaintStatus";
     }
 
+    @RequestMapping("/verificationStatus")
+    public String verificationStatus() {
+        return "verificationStatus";
+    }
+
+    @RequestMapping("/reviewStatus")
+    public String reviewStatus() {
+        return "reviewStatus";
+    }
+
     @RequestMapping("/category")
     public String category() {
         return "category1";

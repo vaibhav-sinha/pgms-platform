@@ -6,12 +6,12 @@ import lombok.Data;
 import javax.persistence.*;
 
 /**
- * Created by user-1 on 27/6/15.
+ * Created by user-1 on 12/7/15.
  */
 @Data
 @Entity
-@Table(name = "complaint_status")
-public class ComplaintStatusEntity {
+@Table(name = "verification_status")
+public class VerificationStatusEntity {
 
     @GeneratedValue
     @Id

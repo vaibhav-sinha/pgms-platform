@@ -35,11 +35,27 @@ public class UpdateEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn
-    private ComplaintStatusEntity oldStatus;
+    private ComplaintStatusEntity oldComplaintStatus;
 
     @ManyToOne(optional = false)
     @JoinColumn
-    private ComplaintStatusEntity newStatus;
+    private ComplaintStatusEntity newComplaintStatus;
+
+    @ManyToOne(optional = false)
+    @JoinColumn
+    private VerificationStatusEntity oldVerificationStatus;
+
+    @ManyToOne(optional = false)
+    @JoinColumn
+    private VerificationStatusEntity newVerificationStatus;
+
+    @ManyToOne(optional = false)
+    @JoinColumn
+    private ReviewStatusEntity oldReviewStatus;
+
+    @ManyToOne(optional = false)
+    @JoinColumn
+    private ReviewStatusEntity newReviewStatus;
 
     @ManyToOne(optional = false)
     @JoinColumn

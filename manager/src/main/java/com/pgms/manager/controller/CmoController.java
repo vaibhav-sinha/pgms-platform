@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +41,8 @@ public class CmoController {
     OfficerService officerService;
     @Autowired
     UpdateService updateService;
+    @Autowired
+    ReviewStatusService reviewStatusService;
 
     @RequestMapping("/dashboard")
     public ModelAndView dashboard(@AuthenticationPrincipal UserDetail userDetail) {
@@ -161,6 +164,15 @@ public class CmoController {
         PgmsResponse<Info<String>> pgmsResponse = new PgmsResponse<>();
         pgmsResponse.setSuccess(true);
         pgmsResponse.setData(info);
+        return pgmsResponse;
+    }
+
+    @RequestMapping("/statusList")
+    @ResponseBody
+    public PgmsResponse<List<ReviewStatus>> statusList() {
+        PgmsResponse<List<ReviewStatus>> pgmsResponse = new PgmsResponse<>();
+        pgmsResponse.setData(reviewStatusService.getAllActiveReviewStatus());
+        pgmsResponse.setSuccess(true);
         return pgmsResponse;
     }
 }
