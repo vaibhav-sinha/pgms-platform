@@ -7,24 +7,37 @@
 
     <context:annotation-config />
 
-    <bean id="restAuthenticationEntryPoint" class="com.pgms.admin.security.RestAuthenticationEntryPoint" />
+    <!--<bean id="restAuthenticationEntryPoint" class="com.pgms.admin.security.RestAuthenticationEntryPoint" />-->
     <bean id="mapper" class="com.pgms.shared.util.Mapper"/>
 
 
-    <security:http auto-config='true' pattern="/api/**" create-session="stateless" entry-point-ref="restAuthenticationEntryPoint">
+    <!--<security:http auto-config='true' pattern="/api/**" create-session="stateless" entry-point-ref="restAuthenticationEntryPoint">
         <security:intercept-url pattern="/api/**" access="ROLE_USER" />
         <security:http-basic />
+    </security:http>-->
+
+    <security:http auto-config="true">
+        <!--<security:intercept-url pattern="/ui/*" access="ROLE_USER" />-->
+        <security:intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <security:intercept-url pattern="/resources/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <security:intercept-url pattern="/**" access="ROLE_USER" />
+        <security:form-login login-page="/login"
+                             username-parameter="j_username"
+                             password-parameter="j_password"
+                             login-processing-url="/doLogin"
+                             default-target-url="/index"/>
+        <security:logout logout-success-url="/" logout-url="/signout" />
+        <security:session-management>
+            <security:concurrency-control max-sessions="1" />
+        </security:session-management>
     </security:http>
 
-    <security:http auto-config='true'>
-        <security:intercept-url pattern="/ui/*" access="ROLE_USER" />
-        <security:form-login />
-    </security:http>
+    <security:debug />
 
     <security:authentication-manager>
         <security:authentication-provider>
             <security:user-service>
-                <security:user name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN" />
+                <security:user name="admin" password="admin" authorities="ROLE_USER" />
             </security:user-service>
         </security:authentication-provider>
     </security:authentication-manager>

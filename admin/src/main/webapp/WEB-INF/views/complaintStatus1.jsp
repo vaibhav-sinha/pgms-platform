@@ -1,13 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html ng-app="categoryApp">
+<html ng-app="complaintStatusApp">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PGMS - Admin Dashboard</title>
 </head>
 
-<body ng-controller="categoryController">
+<body ng-controller="complaintStatusController">
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -27,13 +27,12 @@
                 </li>
             </ul>
         </div>
-
     </div><!-- /.container-fluid -->
 </nav>
 
 <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
     <ul class="nav menu">
-        <li class="active"><a href="<c:url value="category"/>"><span class="glyphicon glyphicon-dashboard"></span> Category</a></li>
+        <li class="active"><a href="<c:url value="complaintStatus"/>"><span class="glyphicon glyphicon-dashboard"></span> Category</a></li>
         <li><a href="<c:url value="complaintStatus"/>"><span class="glyphicon glyphicon-th"></span> Complaint Status</a></li>
         <li><a href="<c:url value="verificationStatus"/>"><span class="glyphicon glyphicon-th"></span> Verification Status</a></li>
         <li><a href="<c:url value="reviewStatus"/>"><span class="glyphicon glyphicon-th"></span> Review Status</a></li>
@@ -61,7 +60,7 @@
     <div>
         <div class="col-md-12"  ng-show="displayMode">
             <div class="panel panel-blue">
-                <div class="panel-heading dark-overlay"><span class="glyphicon glyphicon-check"></span>Category List</div>
+                <div class="panel-heading dark-overlay"><span class="glyphicon glyphicon-check"></span>Complaint Status List</div>
                 <div class="panel-footer">
                     <div class="input-group">
 							<span class="input-group-btn">
@@ -75,10 +74,10 @@
                             <div>
                                 <table width="100%">
                                     <tr>
-                                    <th text-align="center">ID</th>
-                                    <th text-align="center">Name</th>
-                                    <th text-align="center">Edit</th>
-                                    <th text-align="center">Delete</th>
+                                        <th text-align="center">ID</th>
+                                        <th text-align="center">Name</th>
+                                        <th text-align="center">Edit</th>
+                                        <th text-align="center">Delete</th>
                                     </tr>
                                     <tr ng-repeat="row in allActive">
                                         <td align="center">{{row.id}}</td>
@@ -95,15 +94,9 @@
         </div><!--/.col-->
         <div class="col-md-12"  ng-show="createMode">
             <form role="form">
-
                 <div class="form-group">
                     <label>Name</label>
-                    <input class="form-control" placeholder="Category name" ng-model="newCategory.name">
-                </div>
-
-                <div class="form-group">
-                    <label>Department</label>
-                    <select class="form-control" ng-options="department.name for department in departments" ng-model="selectedDepartment"></select>
+                    <input class="form-control" placeholder="Complaint Status name" ng-model="newComplaintStatus.name">
                 </div>
                 <button type="submit" class="btn btn-primary"  ng-click="create()">Submit</button>
             </form>
@@ -113,12 +106,7 @@
 
                 <div class="form-group">
                     <label>Name</label>
-                    <input class="form-control" placeholder="Category name" ng-model="updateCategory.name">
-                </div>
-
-                <div class="form-group">
-                    <label>Department</label>
-                    <select class="form-control" ng-options="department.name for department in departments" ng-model="updateCategory.department"></select>
+                    <input class="form-control" placeholder="Complaint Status name" ng-model="updateComplaintStatus.name">
                 </div>
                 <button type="submit" class="btn btn-primary"  ng-click="update()">Submit</button>
             </form>
@@ -134,16 +122,13 @@
 
 <script src="<c:url value="/resources/lib/angular.min.js" />"></script>
 <script src="<c:url value="/resources/lib/angular-base64.min.js" />"></script>
-<script src="<c:url value="/resources/js/category.js" />"></script>
+<script src="<c:url value="/resources/js/complaintStatus.js" />"></script>
 
 <link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/datepicker3.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
 <script>
-    $('#calendar').datepicker({
-    });
-
     !function ($) {
         $(document).on("click","ul.nav li.parent > a > span.icon", function(){
             $(this).find('em:first').toggleClass("glyphicon-minus");
