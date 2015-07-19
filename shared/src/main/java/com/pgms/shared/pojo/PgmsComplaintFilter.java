@@ -18,5 +18,11 @@ public class PgmsComplaintFilter {
     private Date createdAfter;
     private Date updatedAfter;
     private Long complaintStatusId;
+    private Long reviewStatusId;
+    private Long verificationStatusId;
     private Boolean reopened;
+    private String searchText;
+    private Boolean isUrgent;
+    private String userRole;
+    private String phase;
 }

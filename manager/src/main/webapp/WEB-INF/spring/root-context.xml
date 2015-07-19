@@ -6,25 +6,28 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-       <context:component-scan base-package="com.pgms.manager.security" />
-
-    <!--<bean id="mapper" class="com.pgms.shared.util.Mapper"/>-->
+    <context:component-scan base-package="com.pgms.manager.security" />
 
     <security:authentication-manager alias="authenticationManager">
         <security:authentication-provider ref="userLoginService"  />
     </security:authentication-manager>
 
-    <security:http use-expressions="true" auto-config="true">
+    <security:http pattern="/login" security="none"/>
+    <security:http pattern="/resources/**" security="none"/>
+
+    <security:http use-expressions="true" entry-point-ref="ajaxAwareAuthenticationEntryPoint">
         <security:intercept-url pattern="/**" access="hasAnyRole('ROLE_OFFICER', 'ROLE_CMO', 'ROLE_CALL_CENTRE')" />
-        <!--<security:access-denied-handler error-page="/accessDenied" />
         <security:form-login login-page="/login"
-                             username-parameter="username"
-                             password-parameter="password"
-                             login-processing-url="/doLogin"/>
-        <security:logout logout-success-url="/" logout-url="/signout" />-->
+                             username-parameter="j_username"
+                             password-parameter="j_password"
+                             login-processing-url="/doLogin"
+                             default-target-url="/dashboard"/>
+        <security:logout logout-success-url="/dashboard " logout-url="/signout" />
         <!--<security:session-management>
             <security:concurrency-control max-sessions="1" />
         </security:session-management>-->
     </security:http>
+
+    <security:debug />
 
 </beans>

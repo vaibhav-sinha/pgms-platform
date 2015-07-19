@@ -9,6 +9,8 @@
     <context:property-placeholder location="file:/pgms/pgms.config"/>
 
     <bean id="mapper" class="com.pgms.shared.util.Mapper"/>
+    <bean id="pgmsObjectMapper" class="com.pgms.shared.json.PgmsObjectMapper"/>
+    <bean id="jsonConverter" class="com.pgms.shared.json.JacksonJsonConverter"/>
 
     <bean id="entityManagerFactory"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">

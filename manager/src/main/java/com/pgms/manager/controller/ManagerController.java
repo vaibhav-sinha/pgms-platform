@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by user-1 on 28/6/15.
  */
-@PreAuthorize("hasAnyRole('ROLE_OFFICER', 'ROLE_CMO', 'ROLE_CALL_CENTRE')")
+
 @Controller
 public class ManagerController {
 
@@ -36,6 +36,12 @@ public class ManagerController {
     @Autowired
     UpdateService updateService;
 
+    @RequestMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_OFFICER', 'ROLE_CMO', 'ROLE_CALL_CENTRE')")
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
     public String dashboard(@AuthenticationPrincipal UserDetail userDetail, HttpServletRequest request) {
         if(request.isUserInRole("ROLE_OFFICER")) {
@@ -52,15 +58,29 @@ public class ManagerController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_OFFICER', 'ROLE_CMO', 'ROLE_CALL_CENTRE')")
     @RequestMapping(value = "/complaints", method = RequestMethod.POST)
     @ResponseBody
-    public PgmsResponse<List<Complaint>> complaints(@RequestBody PgmsComplaintFilter pgmsComplaintFilter) {
+    public PgmsResponse<List<Complaint>> complaints(@AuthenticationPrincipal UserDetail userDetail, @RequestBody PgmsComplaintFilter pgmsComplaintFilter) {
+        pgmsComplaintFilter.setUserRole(userDetail.getRole());
         PgmsResponse<List<Complaint>> pgmsResponse = new PgmsResponse<>();
         pgmsResponse.setSuccess(true);
         pgmsResponse.setData(complaintService.getComplaintsForFilter(pgmsComplaintFilter));
         return pgmsResponse;
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_OFFICER', 'ROLE_CMO', 'ROLE_CALL_CENTRE')")
+    @RequestMapping(value = "/complaints/count", method = RequestMethod.POST)
+    @ResponseBody
+    public PgmsResponse<Long> complaintsCount(@AuthenticationPrincipal UserDetail userDetail, @RequestBody PgmsComplaintFilter pgmsComplaintFilter) {
+        pgmsComplaintFilter.setUserRole(userDetail.getRole());
+        PgmsResponse<Long> pgmsResponse = new PgmsResponse<>();
+        pgmsResponse.setSuccess(true);
+        pgmsResponse.setData(complaintService.getComplaintsCountForFilter(pgmsComplaintFilter));
+        return pgmsResponse;
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_OFFICER', 'ROLE_CMO', 'ROLE_CALL_CENTRE')")
     @RequestMapping(value = "/updateComplaint", method = RequestMethod.POST)
     @ResponseBody
     public PgmsResponse<Complaint> updateComplaint(@RequestBody Complaint complaint) {
@@ -71,6 +91,7 @@ public class ManagerController {
         return pgmsResponse;
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_OFFICER', 'ROLE_CMO', 'ROLE_CALL_CENTRE')")
     @RequestMapping(value = "/statusList", method = RequestMethod.GET)
     public String statusList(HttpServletRequest request) {
         if(request.isUserInRole("ROLE_OFFICER")) {
@@ -85,6 +106,7 @@ public class ManagerController {
         return "error";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_OFFICER', 'ROLE_CMO', 'ROLE_CALL_CENTRE')")
     @RequestMapping(value = "/departmentList", method = RequestMethod.GET)
     @ResponseBody
     public PgmsResponse<List<Department>> departmentList() {
@@ -94,6 +116,7 @@ public class ManagerController {
         return pgmsResponse;
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_OFFICER', 'ROLE_CMO', 'ROLE_CALL_CENTRE')")
     @RequestMapping(value = "/getUpdateHistory/{complaintId}", method = RequestMethod.GET)
     @ResponseBody
     public PgmsResponse<List<Update>> getUpdateHistory(@PathVariable Long complaintId) {
@@ -106,6 +129,7 @@ public class ManagerController {
         return pgmsResponse;
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_OFFICER', 'ROLE_CMO', 'ROLE_CALL_CENTRE')")
     @RequestMapping(value = "/saveUpdate", method = RequestMethod.POST)
     @ResponseBody
     public PgmsResponse<Update> saveUpdate(@RequestBody Update update) {
