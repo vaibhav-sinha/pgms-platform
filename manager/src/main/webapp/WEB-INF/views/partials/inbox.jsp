@@ -37,7 +37,7 @@
                         <h3 class="box-title">ComplaintBox</h3>
                         <div class="box-tools pull-right">
                             <div class="has-feedback">
-                                <input type="text" class="form-control input-sm" placeholder="Search" ng-model="searchText"/>
+                                <input type="text" class="form-control input-sm" placeholder="Search" ng-model="searchText" ng-model-options="{ debounce: 500 }"/>
                                 <span class="glyphicon glyphicon-search form-control-feedback"></span>
                             </div>
                         </div><!-- /.box-tools -->
@@ -45,34 +45,24 @@
                     <div class="box-body no-padding">
                         <div class="mailbox-controls">
                             <!-- Check all button -->
-                            <button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
-                            <button class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+                            <button class="btn btn-default btn-sm checkbox-toggle" style="visibility:hidden"><i class="fa fa-square-o"></i></button>
                             <div class="pull-right">
                                 {{currentData.countDisplay}}
                                 <div class="btn-group">
-                                    <button class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-                                    <button class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
+                                    <button class="btn btn-default btn-sm" ng-click="previousPage()" ng-disabled="currentData.page==0"><i class="fa fa-chevron-left"></i></button>
+                                    <button class="btn btn-default btn-sm" ng-click="nextPage()" ng-disabled="currentData.page==currentData.totalPages-1"><i class="fa fa-chevron-right"></i></button>
                                 </div><!-- /.btn-group -->
                             </div><!-- /.pull-right -->
                         </div>
                         <div class="table-responsive mailbox-messages">
                             <table class="table table-hover table-striped">
                                 <tbody>
-                                <tr ng-repeat="complaint in currentData.complaintList">
-                                    <td><input type="checkbox" /></td>
-                                    <td class="mailbox-star"><a href="#"><i class="fa text-yellow" ng-class="complaint.urgent ? 'fa-star-o' : 'fa-star'"></i></a></td>
-                                    <td class="mailbox-name"><a href="read-mail.html">{{complaint.submitter.name}}</a></td>
-                                    <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - {{complaint.description | limitTo : 40}}...</td>
+                                <tr ng-repeat="complaint in currentData.complaintList" ng-click="showComplaint(complaint)">
+                                    <td class="mailbox-star"><i class="fa text-yellow" ng-class="complaint.urgent ? 'fa-star-o' : 'fa-star'"></i></td>
+                                    <td class="mailbox-name">{{complaint.submitter.name}}</td>
+                                    <td class="mailbox-subject"><b>Issue</b> - {{complaint.description | limitTo : 40}}...</td>
                                     <td class="mailbox-attachment"></td>
                                     <td class="mailbox-date">{{complaint.createdOn | timeago}}</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" /></td>
-                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                    <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>
-                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                    <td class="mailbox-date">28 mins ago</td>
                                 </tr>
                                 </tbody>
                             </table><!-- /.table -->
@@ -81,13 +71,12 @@
                     <div class="box-footer no-padding">
                         <div class="mailbox-controls">
                             <!-- Check all button -->
-                            <button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
-                            <button class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+                            <button class="btn btn-default btn-sm checkbox-toggle" style="visibility:hidden"><i class="fa fa-square-o"></i></button>
                             <div class="pull-right">
-                                1-50/200
+                                {{currentData.countDisplay}}
                                 <div class="btn-group">
-                                    <button class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-                                    <button class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
+                                    <button class="btn btn-default btn-sm"  ng-click="previousPage()" ng-disabled="currentData.page==0"><i class="fa fa-chevron-left"></i></button>
+                                    <button class="btn btn-default btn-sm" ng-click="nextPage()" ng-disabled="currentData.page==currentData.totalPages-1"><i class="fa fa-chevron-right"></i></button>
                                 </div><!-- /.btn-group -->
                             </div><!-- /.pull-right -->
                         </div>

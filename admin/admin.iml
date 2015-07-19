@@ -58,9 +58,6 @@
     <orderEntry type="library" name="Maven: org.activiti:activiti-engine:5.17.0" level="project" />
     <orderEntry type="library" name="Maven: org.activiti:activiti-bpmn-converter:5.17.0" level="project" />
     <orderEntry type="library" name="Maven: org.activiti:activiti-bpmn-model:5.17.0" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.4.0-rc3" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.4.0-rc3" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.4.0-rc3" level="project" />
     <orderEntry type="library" name="Maven: org.activiti:activiti-process-validation:5.17.0" level="project" />
     <orderEntry type="library" name="Maven: org.activiti:activiti-image-generator:5.17.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-email:1.2" level="project" />
@@ -85,6 +82,9 @@
     <orderEntry type="library" name="Maven: antlr:antlr:2.7.7" level="project" />
     <orderEntry type="library" name="Maven: org.jboss:jandex:1.1.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:4.3.5.Final" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.4.0-rc3" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.4.0-rc3" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.4.0-rc3" level="project" />
     <orderEntry type="module" module-name="service" />
     <orderEntry type="library" name="Maven: org.springframework:spring-oxm:4.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.30" level="project" />

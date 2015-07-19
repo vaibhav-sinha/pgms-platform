@@ -12,13 +12,14 @@ app.config(function($routeProvider) {
         })
 });
 
-var inboxController = app.controller('inboxController', function($scope, $http) {
+var inboxController = app.controller('inboxController', function($scope, $http, $rootScope, $location) {
     $scope.currentData = {
         'filter' : 'urgent',
         'complaintList' : null,
         'totalCount' : null,
-        'page' : 1,
-        'countDisplay' : null
+        'page' : 0,
+        'countDisplay' : null,
+        'totalPages' : null
     };
     $scope.count = {
         'new': null,
@@ -180,12 +181,16 @@ var inboxController = app.controller('inboxController', function($scope, $http) 
     };
 
     $scope.processCountForDisplay = function(count) {
+        if(count === undefined) {
+            $scope.currentData.countDisplay = '';
+            return;
+        }
         if(count == 0) {
             $scope.currentData.countDisplay = '0/0';
         }
         else {
-            var start = ($scope.currentData.page - 1)*20 + 1;
-            var end = ($scope.currentData.page)*20;
+            var start = ($scope.currentData.page)*20 + 1;
+            var end = ($scope.currentData.page + 1)*20;
 
             if(end > count) {
                 end = count;
@@ -193,6 +198,7 @@ var inboxController = app.controller('inboxController', function($scope, $http) 
 
             $scope.currentData.countDisplay = start + '-' + end + '/' + count;
         }
+        $scope.currentData.totalPages = Math.floor(count/20 + (count%20 > 0));
     };
 
     $scope.getAllCounts = function() {
@@ -205,12 +211,41 @@ var inboxController = app.controller('inboxController', function($scope, $http) 
     };
 
     $scope.selectFilter = function(filter) {
+        $scope.pgmsFilter[$scope.currentData.filter].page = 0;
         $scope.currentData.filter = filter;
         $scope.getComplaints($scope.pgmsFilter[filter]);
         $scope.currentData.totalCount = $scope.count[filter];
+        $scope.currentData.totalPages = Math.floor($scope.currentData.totalCount/20 + ($scope.currentData.totalCount%20 > 0));
         $scope.processCountForDisplay($scope.currentData.totalCount);
     };
 
+    $scope.previousPage = function() {
+        $scope.pgmsFilter[$scope.currentData.filter].page = $scope.pgmsFilter[$scope.currentData.filter].page - 1;
+        $scope.currentData.page = $scope.currentData.page - 1;
+        $scope.getComplaints($scope.currentData.filter);
+    };
+
+    $scope.nextPage = function() {
+        $scope.filter[$scope.currentData.filter].page = $scope.pgmsFilter[$scope.currentData.filter].page + 1;
+        $scope.currentData.page = $scope.currentData.page + 1;
+        $scope.getComplaints($scope.currentData.filter);
+    };
+
+    $scope.$watch('searchText', function() {
+        if($scope.searchText.length == 0) {
+            $scope.selectFilter('urgent');
+            return;
+        }
+        if($scope.searchText.length > 3) {
+            $scope.pgmsFilter.search.searchText = $scope.searchText;
+            $scope.selectFilter('search');
+        }
+    });
+
+    $scope.showComplaint = function(complaint) {
+        $rootScope.$broadcast('selectedComplaint', complaint);
+        $location.path('#/complaint');
+    };
 
     //Calls
     $scope.getAllCounts();
@@ -219,4 +254,9 @@ var inboxController = app.controller('inboxController', function($scope, $http) 
 
 });
 
-var complaintController = app.controller('complaintController', function($scope, $http) {});
+var complaintController = app.controller('complaintController', function($scope, $http, $location) {
+    $scope.$on('selectedComplaint', function(event, arg) {
+        console.log(arg);
+        $scope.complaint = arg;
+    });
+});

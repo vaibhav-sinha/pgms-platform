@@ -39,6 +39,14 @@
         <label>Name</label>
         <input class="form-control" placeholder="Complaint Status name" ng-model="newComplaintStatus.name">
       </div>
+      <div class="form-group">
+        <label>Represents Closed</label>
+        <input type="checkbox" class="form-control" ng-model="newComplaintStatus.representsClosed">
+      </div>
+      <div class="form-group">
+        <label>Is Default</label>
+        <input type="checkbox" class="form-control" ng-model="newComplaintStatus.representsDefault">
+      </div>
       <button type="submit" class="btn btn-primary"  ng-click="create()">Submit</button>
     </form>
   </div>

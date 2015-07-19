@@ -37,7 +37,7 @@
         <sec:authentication var="username" property="name" />
         <sec:authentication var="designation" property="designation.name" />
         <!-- Logo -->
-        <a href="#" class="logo">
+        <a href="#/" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>PGMS</b>Delhi</span>
             <!-- logo for regular state and mobile devices -->
@@ -49,7 +49,7 @@
                 <ul class="nav navbar-nav">
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <a href="#/" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="<c:url value="/resources/images/flag.jpg"/>" class="user-image" alt="Flag Image" />
                             <span class="hidden-xs">${user.name}</span>
                         </a>
@@ -77,7 +77,7 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                    <a href="#/" class="btn btn-default btn-flat">Profile</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="signout" class="btn btn-default btn-flat">Sign out</a>
