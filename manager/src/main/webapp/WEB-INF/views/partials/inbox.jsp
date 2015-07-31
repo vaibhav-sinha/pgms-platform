@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -25,8 +26,10 @@
                             <li ng-class="{'active' : currentData.filter=='updated'}" ng-click="selectFilter('updated')"><a href="#/"><i class="fa fa-envelope-o"></i> Updated <span class="label label-primary pull-right">{{count.updated}}</span></a></li>
                             <li ng-class="{'active' : currentData.filter=='urgent'}" ng-click="selectFilter('urgent')"><a href="#/"><i class="fa fa-file-text-o"></i> Urgent <span class="label label-primary pull-right">{{count.urgent}}</span></a></li>
                             <li ng-class="{'active' : currentData.filter=='pending'}" ng-click="selectFilter('pending')"><a href="#/"><i class="fa fa-envelope-o"></i> Pending <span class="label label-primary pull-right">{{count.pending}}</span></a></li>
+                            <c:if test="${user.role == 'ROLE_OFFICER' || user.role == 'ROLE_CMO'}">
                             <li ng-class="{'active' : currentData.filter=='verification'}" ng-click="selectFilter('verification')"><a href="#/"><i class="fa fa-filter"></i> In Verification <span class="label label-warning pull-right">{{count.verification}}</span></a></li>
                             <li ng-class="{'active' : currentData.filter=='review'}" ng-click="selectFilter('review')"><a href="#/"><i class="fa fa-trash-o"></i> In Review <span class="label label-primary pull-right">{{count.review}}</span></a></li>
+                            </c:if>
                         </ul>
                     </div><!-- /.box-body -->
                 </div><!-- /. box -->
@@ -60,7 +63,7 @@
                                 <tr ng-repeat="complaint in currentData.complaintList" ng-click="showComplaint(complaint)">
                                     <td class="mailbox-star"><i class="fa text-yellow" ng-class="complaint.urgent ? 'fa-star-o' : 'fa-star'"></i></td>
                                     <td class="mailbox-name">{{complaint.submitter.name}}</td>
-                                    <td class="mailbox-subject"><b>Issue</b> - {{complaint.description | limitTo : 40}}...</td>
+                                    <td class="mailbox-subject"><b>Issue</b> - {{complaint.id | limitTo : 40}}</td>
                                     <td class="mailbox-attachment"></td>
                                     <td class="mailbox-date">{{complaint.createdOn | timeago}}</td>
                                 </tr>

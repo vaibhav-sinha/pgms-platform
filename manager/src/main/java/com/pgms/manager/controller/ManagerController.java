@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,6 +36,8 @@ public class ManagerController {
     DepartmentService departmentService;
     @Autowired
     UpdateService updateService;
+    @Autowired
+    OfficerService officerService;
 
     @RequestMapping("/login")
     public String login() {
@@ -56,6 +59,16 @@ public class ManagerController {
         else {
             return "error";
         }
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_OFFICER', 'ROLE_CMO', 'ROLE_CALL_CENTRE')")
+    @RequestMapping(value = "/complaint/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public PgmsResponse<Complaint> complaints(@AuthenticationPrincipal UserDetail userDetail, @PathVariable Long id) {
+        PgmsResponse<Complaint> pgmsResponse = new PgmsResponse<>();
+        pgmsResponse.setSuccess(true);
+        pgmsResponse.setData(complaintService.findComplaintById(id));
+        return pgmsResponse;
     }
 
     @PreAuthorize("hasAnyRole('ROLE_OFFICER', 'ROLE_CMO', 'ROLE_CALL_CENTRE')")
@@ -132,7 +145,9 @@ public class ManagerController {
     @PreAuthorize("hasAnyRole('ROLE_OFFICER', 'ROLE_CMO', 'ROLE_CALL_CENTRE')")
     @RequestMapping(value = "/saveUpdate", method = RequestMethod.POST)
     @ResponseBody
-    public PgmsResponse<Update> saveUpdate(@RequestBody Update update) {
+    public PgmsResponse<Update> saveUpdate(@AuthenticationPrincipal UserDetail userDetail, @RequestBody Update update) {
+        update.setUpdatedOn(new Date());
+        update.setOfficer(officerService.getOfficer(userDetail.getId()));
         Complaint complaint = update.getComplaint();
         if(update.getUserAction() == UserAction.FORWARD) {
             complaint.setDepartment(update.getNewDepartment());

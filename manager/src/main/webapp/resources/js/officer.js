@@ -12,7 +12,11 @@ app.config(function($routeProvider) {
         })
 });
 
-var inboxController = app.controller('inboxController', function($scope, $http, $rootScope, $location) {
+var shared = app.factory('shared', function() {
+    return {};
+});
+
+var inboxController = app.controller('inboxController', function($scope, $http, $rootScope, $location, shared) {
     $scope.currentData = {
         'filter' : 'urgent',
         'complaintList' : null,
@@ -48,7 +52,7 @@ var inboxController = app.controller('inboxController', function($scope, $http, 
         'phase' : null
     };
     $scope.pgmsFilter.new = {
-        'departmentId' : user.department.id,
+        'departmentId' : user.department != null ? user.department.id : null,
         'categoryId' : null,
         'locationId' : null,
         'page' : 0,
@@ -65,7 +69,7 @@ var inboxController = app.controller('inboxController', function($scope, $http, 
         'phase' : null
     };
     $scope.pgmsFilter.updated = {
-        'departmentId' : user.department.id,
+        'departmentId' : user.department != null ? user.department.id : null,
         'categoryId' : null,
         'locationId' : null,
         'page' : 0,
@@ -82,7 +86,7 @@ var inboxController = app.controller('inboxController', function($scope, $http, 
         'phase' : null
     };
     $scope.pgmsFilter.urgent = {
-        'departmentId' : user.department.id,
+        'departmentId' : user.department != null ? user.department.id : null,
         'categoryId' : null,
         'locationId' : null,
         'page' : 0,
@@ -99,7 +103,7 @@ var inboxController = app.controller('inboxController', function($scope, $http, 
         'phase' : null
     };
     $scope.pgmsFilter.pending    = {
-        'departmentId' : user.department.id,
+        'departmentId' : user.department != null ? user.department.id : null,
         'categoryId' : null,
         'locationId' : null,
         'page' : 0,
@@ -116,7 +120,7 @@ var inboxController = app.controller('inboxController', function($scope, $http, 
         'phase' : 'complaint'
     };
     $scope.pgmsFilter.verification = {
-        'departmentId' : user.department.id,
+        'departmentId' : user.department != null ? user.department.id : null,
         'categoryId' : null,
         'locationId' : null,
         'page' : 0,
@@ -133,7 +137,7 @@ var inboxController = app.controller('inboxController', function($scope, $http, 
         'phase' : 'verification'
     };
     $scope.pgmsFilter.review = {
-        'departmentId' : user.department.id,
+        'departmentId' : user.department != null ? user.department.id : null,
         'categoryId' : null,
         'locationId' : null,
         'page' : 0,
@@ -150,7 +154,7 @@ var inboxController = app.controller('inboxController', function($scope, $http, 
         'phase' : 'review'
     };
     $scope.pgmsFilter.search = {
-        'departmentId' : user.department.id,
+        'departmentId' : user.department != null ? user.department.id : null,
         'categoryId' : null,
         'locationId' : null,
         'page' : 0,
@@ -244,7 +248,8 @@ var inboxController = app.controller('inboxController', function($scope, $http, 
 
     $scope.showComplaint = function(complaint) {
         $rootScope.$broadcast('selectedComplaint', complaint);
-        $location.path('#/complaint');
+        shared.complaint = complaint;
+        $location.path('/complaint');
     };
 
     //Calls
@@ -254,9 +259,83 @@ var inboxController = app.controller('inboxController', function($scope, $http, 
 
 });
 
-var complaintController = app.controller('complaintController', function($scope, $http, $location) {
+var complaintController = app.controller('complaintController', function($scope, $http, $location, shared) {
     $scope.$on('selectedComplaint', function(event, arg) {
         console.log(arg);
         $scope.complaint = arg;
+
+        $http.get('/manager/getUpdateHistory/' + $scope.complaint.id).success(function(data) {
+            $scope.updateHistory = data.data;
+        });
     });
+
+    $scope.user = user;
+    $scope.complaint = shared.complaint;
+    $scope.selectedComplaintStatus = {};
+    $scope.selectedVerificationStatus = {};
+    $scope.selectedReviewStatus = {};
+
+    $http.get('/manager/complaint/' + $scope.complaint.id).success(function(data) {
+        $scope.complaint = data.data;
+        $scope.status = $scope.complaint.complaintStatus || $scope.complaint.verificationStatus || $scope.complaint.reviewStatus;
+    });
+
+    $http.get('/manager/getUpdateHistory/' + $scope.complaint.id).success(function(data) {
+        $scope.updateHistory = data.data;
+    });
+
+    $scope.comment = "";
+
+    $scope.update = {
+        "complaint" : $scope.complaint,
+        "userAction" : null,
+        "oldComplaintStatus" : $scope.complaint.complaintStatus,
+        "newComplaintStatus" : null,
+        "oldVerificationStatus" : $scope.complaint.verificationStatus,
+        "newVerificationStatus" : null,
+        "oldReviewStatus" : $scope.complaint.reviewStatus,
+        "newReviewStatus" : null,
+        "oldCategory" : $scope.complaint.category,
+        "newCategory" : null,
+        "oldDepartment" : $scope.complaint.department,
+        "newDepartment" : null,
+        "comment" : null
+    };
+
+    $scope.postUpdate = function(userAction) {
+        var updateData = angular.copy($scope.update);
+        updateData.userAction = userAction;
+        updateData.newComplaintStatus = angular.copy($scope.selectedComplaintStatus);
+        updateData.newVerificationStatus = angular.copy($scope.selectedVerificationStatus);
+        updateData.newReviewStatus = angular.copy($scope.selectedReviewStatu)s;
+        updateData.newCategory = angular.copy($scope.selectedCategory);
+        updateData.newDepartment = angular.copy($scope.selectedDepartment);
+        updateData.comment = $scope.comment;
+
+        $http.post('/manager/saveUpdate', updateData).success(function(data) {
+            $scope.updateHistory.concat(data.data);
+            $http.get('/manager/complaint/' + $scope.complaint.id).success(function(data) {
+                $scope.complaint = data.data;
+                $scope.status = $scope.complaint.complaintStatus || $scope.complaint.verificationStatus || $scope.complaint.reviewStatus;
+            });
+
+        });
+    };
+
+    $scope.getDepartmentList = function() {
+        $http.get("/manager/departmentList").success(function(data) {
+           $scope.departmentList = data.data;
+        });
+    };
+
+    $scope.getStatusList = function() {
+        $http.get("/manager/statusList").success(function(data) {
+            $scope.statusList = data.data;
+        });
+    };
+
+    //Calls
+    $scope.getDepartmentList();
+    $scope.getStatusList();
+
 });
