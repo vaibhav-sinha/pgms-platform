@@ -15,6 +15,26 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">
+            <div class="col-md-3" ng-if="user.role == 'ROLE_CMO'">
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Filters</h3>
+                    </div>
+                    <input class="box-body no-padding">
+                        <label for="department">Department</label><select id="department" ng-options="department.id as department.name for department in departmentList" ng-model="pgmsFilter.custom.departmentId"></select>
+                        <label for="createdAfter">Created After</label><input type="date" id="createdAfter" ng-model="pgmsFilter.custom.createdAfter">
+                        <label for="updatedAfter">Updated After</label><input type="date" id="updatedAfter" ng-model="pgmsFilter.custom.updatedAfter">
+                        <button ng-click="selectFilter('custom')">Search</button>
+                        <button ng-click="removeAllFilter()">Clear</button>
+                        <ul class="nav nav-pills nav-stacked">
+                            <li ng-class="{'active' : currentData.filter=='new'}" ng-click="selectFilter('new')"><a href="#/"><i class="fa fa-inbox"></i> New <span class="label label-primary pull-right">{{count.new}}</span></a></li>
+                            <li ng-class="{'active' : currentData.filter=='updated'}" ng-click="selectFilter('updated')"><a href="#/"><i class="fa fa-envelope-o"></i> Updated <span class="label label-primary pull-right">{{count.updated}}</span></a></li>
+                            <li ng-class="{'active' : currentData.filter=='urgent'}" ng-click="selectFilter('urgent')"><a href="#/"><i class="fa fa-file-text-o"></i> Urgent <span class="label label-primary pull-right">{{count.urgent}}</span></a></li>
+                            <li ng-class="{'active' : currentData.filter=='pending'}" ng-click="selectFilter('pending')"><a href="#/"><i class="fa fa-envelope-o"></i> Pending <span class="label label-primary pull-right">{{count.pending}}</span></a></li>
+                        </ul>
+                    </div><!-- /.box-body -->
+                </div><!-- /. box -->
+            </div><!-- /.col -->
             <div class="col-md-3">
                 <div class="box box-solid">
                     <div class="box-header with-border">
@@ -26,10 +46,10 @@
                             <li ng-class="{'active' : currentData.filter=='updated'}" ng-click="selectFilter('updated')"><a href="#/"><i class="fa fa-envelope-o"></i> Updated <span class="label label-primary pull-right">{{count.updated}}</span></a></li>
                             <li ng-class="{'active' : currentData.filter=='urgent'}" ng-click="selectFilter('urgent')"><a href="#/"><i class="fa fa-file-text-o"></i> Urgent <span class="label label-primary pull-right">{{count.urgent}}</span></a></li>
                             <li ng-class="{'active' : currentData.filter=='pending'}" ng-click="selectFilter('pending')"><a href="#/"><i class="fa fa-envelope-o"></i> Pending <span class="label label-primary pull-right">{{count.pending}}</span></a></li>
-                            <c:if test="${user.role == 'ROLE_OFFICER' || user.role == 'ROLE_CMO'}">
+                            <div ng-if="user.role == 'ROLE_OFFICER' || user.role == 'ROLE_CMO'">
                             <li ng-class="{'active' : currentData.filter=='verification'}" ng-click="selectFilter('verification')"><a href="#/"><i class="fa fa-filter"></i> In Verification <span class="label label-warning pull-right">{{count.verification}}</span></a></li>
                             <li ng-class="{'active' : currentData.filter=='review'}" ng-click="selectFilter('review')"><a href="#/"><i class="fa fa-trash-o"></i> In Review <span class="label label-primary pull-right">{{count.review}}</span></a></li>
-                            </c:if>
+                            </div>
                         </ul>
                     </div><!-- /.box-body -->
                 </div><!-- /. box -->

@@ -17,6 +17,7 @@ var shared = app.factory('shared', function() {
 });
 
 var inboxController = app.controller('inboxController', function($scope, $http, $rootScope, $location, shared) {
+    $scope.user = user;
     $scope.currentData = {
         'filter' : 'urgent',
         'complaintList' : null,
@@ -169,6 +170,23 @@ var inboxController = app.controller('inboxController', function($scope, $http, 
         'isUrgent' : null,
         'userRole' : null
     };
+    $scope.pgmsFilter.custom = {
+        'departmentId' : user.department != null ? user.department.id : null,
+        'categoryId' : null,
+        'locationId' : null,
+        'page' : 0,
+        'pageSize' : 20,
+        'createdAfter' : null,
+        'updatedAfter' : null,
+        'complaintStatusId' : null,
+        'verificationStatusId' : null,
+        'reviewStatusId' : null,
+        'reopened' : null,
+        'searchText' : null,
+        'isUrgent' : null,
+        'userRole' : null,
+        'phase' : null
+    };
 
     $scope.getComplaints = function(filter) {
         $http.post("/manager/complaints", filter).success(function(data) {
@@ -252,8 +270,22 @@ var inboxController = app.controller('inboxController', function($scope, $http, 
         $location.path('/complaint');
     };
 
+    $scope.removeAllFilter = function () {
+        $scope.pgmsFilter.custom.departmentId = null;
+        $scope.pgmsFilter.custom.createdAfter = null;
+        $scope.pgmsFilter.custom.updatedAfter = null;
+        $scope.selectFilter('custom');
+    };
+
+    $scope.getDepartmentList = function() {
+        $http.get("/manager/departmentList").success(function(data) {
+            $scope.departmentList = data.data;
+        });
+    };
+
     //Calls
     $scope.getAllCounts();
+    $scope.getDepartmentList();
     $scope.getComplaints($scope.pgmsFilter.urgent);
     $scope.currentData.totalCount = $scope.count.urgent;
 
@@ -307,7 +339,7 @@ var complaintController = app.controller('complaintController', function($scope,
         updateData.userAction = userAction;
         updateData.newComplaintStatus = angular.copy($scope.selectedComplaintStatus);
         updateData.newVerificationStatus = angular.copy($scope.selectedVerificationStatus);
-        updateData.newReviewStatus = angular.copy($scope.selectedReviewStatu)s;
+        updateData.newReviewStatus = angular.copy($scope.selectedReviewStatus);
         updateData.newCategory = angular.copy($scope.selectedCategory);
         updateData.newDepartment = angular.copy($scope.selectedDepartment);
         updateData.comment = $scope.comment;
