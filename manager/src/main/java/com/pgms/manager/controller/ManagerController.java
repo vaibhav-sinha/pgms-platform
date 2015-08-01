@@ -44,6 +44,12 @@ public class ManagerController {
         return "login";
     }
 
+    @RequestMapping("/partials/{fileName}")
+    public String serve(@PathVariable(value = "fileName") String fileName )
+    {
+        return fileName;
+    }
+
     @PreAuthorize("hasAnyRole('ROLE_OFFICER', 'ROLE_CMO', 'ROLE_CALL_CENTRE')")
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
     public String dashboard(@AuthenticationPrincipal UserDetail userDetail, HttpServletRequest request) {

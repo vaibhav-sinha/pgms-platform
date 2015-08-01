@@ -62,18 +62,6 @@
                                     <small>${user.designation.name}</small>
                                 </p>
                             </li>
-                            <!-- Menu Body -->
-                            <li class="user-body">
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Followers</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Sales</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Friends</a>
-                                </div>
-                            </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
@@ -106,6 +94,8 @@
 <script src="<c:url value="/resources/lib/angular.min.js"/>" type="text/javascript"></script>
 <!-- Angular Route -->
 <script src="<c:url value="/resources/lib/angular-route.min.js"/>" type="text/javascript"></script>
+<!-- Angular UI -->
+<script src="<c:url value="/resources/lib/ui-bootstrap-0.12.0.js"/>" type="text/javascript"></script>
 <!-- Angular Timeago -->
 <script src="<c:url value="/resources/lib/ngtimeago.js"/>" type="text/javascript"></script>
 <!-- jQuery 2.1.4 -->
@@ -122,6 +112,9 @@
 <script src="<c:url value="/resources/plugins/iCheck/icheck.min.js"/>" type="text/javascript"></script>
 <!-- Page Script -->
 <script src="<c:url value="/resources/js/officer.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/resources/js/custom.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/resources/js/controllers.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/resources/js/directives.js"/>" type="text/javascript"></script>
 <script>
     var user = ${userJson};
 </script>

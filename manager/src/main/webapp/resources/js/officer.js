@@ -1,4 +1,4 @@
-var app = angular.module("officerApp", ['ngRoute', 'ngtimeago']);
+var app = angular.module("officerApp", ['ngRoute', 'ngtimeago','ui.bootstrap']);
 
 app.config(function($routeProvider) {
     $routeProvider
@@ -6,9 +6,13 @@ app.config(function($routeProvider) {
             templateUrl : 'partials/inbox',
             controller : 'inboxController'
         })
-        .when('/complaint', {
+        .when('/complaint/:complaintId', {
             templateUrl : 'partials/complaint',
             controller : 'complaintController'
+        })
+        .when('/stats', {
+            templateUrl : 'partials/stats',
+            controller : 'statsController'
         })
 });
 
@@ -265,9 +269,7 @@ var inboxController = app.controller('inboxController', function($scope, $http, 
     });
 
     $scope.showComplaint = function(complaint) {
-        $rootScope.$broadcast('selectedComplaint', complaint);
-        shared.complaint = complaint;
-        $location.path('/complaint');
+        $location.path('/complaint/' + complaint.id);
     };
 
     $scope.removeAllFilter = function () {
@@ -291,64 +293,53 @@ var inboxController = app.controller('inboxController', function($scope, $http, 
 
 });
 
-var complaintController = app.controller('complaintController', function($scope, $http, $location, shared) {
-    $scope.$on('selectedComplaint', function(event, arg) {
-        console.log(arg);
-        $scope.complaint = arg;
-
-        $http.get('/manager/getUpdateHistory/' + $scope.complaint.id).success(function(data) {
-            $scope.updateHistory = data.data;
-        });
-    });
+var complaintController = app.controller('complaintController', function($scope, $http, $location, shared,$routeParams) {
 
     $scope.user = user;
-    $scope.complaint = shared.complaint;
-    $scope.selectedComplaintStatus = {};
-    $scope.selectedVerificationStatus = {};
-    $scope.selectedReviewStatus = {};
 
-    $http.get('/manager/complaint/' + $scope.complaint.id).success(function(data) {
+    $scope.complaint= {};
+    $scope.complaintUpdate = {};
+    $scope.update = {};
+    $http.get('/manager/complaint/' + $routeParams.complaintId).success(function(data) {
         $scope.complaint = data.data;
         $scope.status = $scope.complaint.complaintStatus || $scope.complaint.verificationStatus || $scope.complaint.reviewStatus;
-    });
-
-    $http.get('/manager/getUpdateHistory/' + $scope.complaint.id).success(function(data) {
-        $scope.updateHistory = data.data;
+        $scope.update = {
+            "complaint" : $scope.complaint,
+            "userAction" : null,
+            "oldComplaintStatus" : $scope.complaint.complaintStatus,
+            "newComplaintStatus" : null,
+            "oldVerificationStatus" : $scope.complaint.verificationStatus,
+            "newVerificationStatus" : null,
+            "oldReviewStatus" : $scope.complaint.reviewStatus,
+            "newReviewStatus" : null,
+            "oldCategory" : $scope.complaint.category,
+            "newCategory" : null,
+            "oldDepartment" : $scope.complaint.department,
+            "newDepartment" : null,
+            "comment" : null
+        };
     });
 
     $scope.comment = "";
 
-    $scope.update = {
-        "complaint" : $scope.complaint,
-        "userAction" : null,
-        "oldComplaintStatus" : $scope.complaint.complaintStatus,
-        "newComplaintStatus" : null,
-        "oldVerificationStatus" : $scope.complaint.verificationStatus,
-        "newVerificationStatus" : null,
-        "oldReviewStatus" : $scope.complaint.reviewStatus,
-        "newReviewStatus" : null,
-        "oldCategory" : $scope.complaint.category,
-        "newCategory" : null,
-        "oldDepartment" : $scope.complaint.department,
-        "newDepartment" : null,
-        "comment" : null
-    };
+
+
 
     $scope.postUpdate = function(userAction) {
         var updateData = angular.copy($scope.update);
         updateData.userAction = userAction;
-        updateData.newComplaintStatus = angular.copy($scope.selectedComplaintStatus);
-        updateData.newVerificationStatus = angular.copy($scope.selectedVerificationStatus);
-        updateData.newReviewStatus = angular.copy($scope.selectedReviewStatus);
-        updateData.newCategory = angular.copy($scope.selectedCategory);
-        updateData.newDepartment = angular.copy($scope.selectedDepartment);
-        updateData.comment = $scope.comment;
+        updateData.newComplaintStatus = $scope.complaintUpdate.selectedComplaintStatus;
+        updateData.newVerificationStatus = $scope.complaintUpdate.selectedVerificationStatus;
+        updateData.newReviewStatus = $scope.complaintUpdate.selectedReviewStatus;
+        updateData.newCategory = $scope.selectedCategory;
+        updateData.newDepartment = $scope.complaintUpdate.selectedDepartment;
 
         $http.post('/manager/saveUpdate', updateData).success(function(data) {
-            $scope.updateHistory.concat(data.data);
+            $scope.updateHistory.push(data.data);
             $http.get('/manager/complaint/' + $scope.complaint.id).success(function(data) {
                 $scope.complaint = data.data;
                 $scope.status = $scope.complaint.complaintStatus || $scope.complaint.verificationStatus || $scope.complaint.reviewStatus;
+                $scope.complaintUpdate = {};
             });
 
         });
@@ -370,4 +361,22 @@ var complaintController = app.controller('complaintController', function($scope,
     $scope.getDepartmentList();
     $scope.getStatusList();
 
+});
+
+var statsController = app.controller('statsController', function($scope, $http) {
+    $scope.stats = {};
+    $scope.getStats = function() {
+        $http.get('/manager/cmo/locationStats').success(function(data) {
+            $scope.stats.location = data.data;
+        });
+        $http.get('/manager/cmo/departmentStats').success(function(data) {
+            $scope.stats.department = data.data;
+        });
+        $http.get('/manager/cmo/officerStats').success(function(data) {
+            $scope.stats.officer = data.data;
+        });
+    };
+
+    //Calls
+    $scope.getStats();
 });

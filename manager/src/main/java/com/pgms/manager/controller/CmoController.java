@@ -2,11 +2,10 @@ package com.pgms.manager.controller;
 
 import com.pgms.manager.security.UserDetail;
 import com.pgms.service.api.*;
+import com.pgms.shared.json.JsonConverter;
 import com.pgms.shared.model.*;
-import com.pgms.shared.pojo.Info;
-import com.pgms.shared.pojo.PgmsComplaintFilter;
-import com.pgms.shared.pojo.PgmsResponse;
-import com.pgms.shared.pojo.PgmsUpdateFilter;
+import com.pgms.shared.pojo.*;
+import com.pgms.shared.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,12 +43,47 @@ public class CmoController {
     UpdateService updateService;
     @Autowired
     ReviewStatusService reviewStatusService;
+    @Autowired
+    Mapper mapper;
+    @Autowired
+    JsonConverter jsonConverter;
 
     @RequestMapping("/dashboard")
-    public ModelAndView dashboard(@AuthenticationPrincipal UserDetail userDetail) {
-        ModelAndView modelAndView = new ModelAndView("cmo_dashboard");
-        modelAndView.addObject("user", userDetail);
+    public ModelAndView dashboard(@AuthenticationPrincipal UserDetail userDetail) throws IOException {
+        OfficerVO officerVO = mapper.map(userDetail, OfficerVO.class);
+        ModelAndView modelAndView = new ModelAndView("officer_dashboard");
+        modelAndView.addObject("user", officerVO);
+        modelAndView.addObject("userJson", jsonConverter.toJson(officerVO));
         return modelAndView;
+    }
+
+    @RequestMapping("/partials/inbox")
+    public String partialInbox() {
+        return "partials/inbox";
+    }
+
+    @RequestMapping("/partials/complaint")
+    public String partialComplaint() {
+        return "partials/complaint";
+    }
+
+    @RequestMapping("/partials/timeline")
+    public String partialTimeline(){
+        return "partials/timeline";
+    }
+
+    @RequestMapping("/partials/timeline-element")
+    public String partialTimelineElement(){
+        return "partials/timeline-element";
+    }
+    @RequestMapping("/partials/stats")
+    public String partialStats() {
+        return "partials/stats";
+    }
+
+    @RequestMapping("/partials/stats-table")
+    public String partialStatsTable() {
+        return "partials/stats-table";
     }
 
     @RequestMapping("/locationStats")
@@ -132,7 +167,7 @@ public class CmoController {
         info.setKeys(keys);
         info.setData(infoEntryList);
 
-        keys.add("Name");
+        //keys.add("Name");
         keys.add("Department");
         keys.add("Open Complaints");
         keys.add("Actions taken");
@@ -152,11 +187,11 @@ public class CmoController {
             infoEntry.setValues(new HashMap<>());
             infoEntry.setName(officer.getName());
 
-            infoEntry.getValues().put("Name", officer.getName());
+            //infoEntry.getValues().put("Name", officer.getName());
             infoEntry.getValues().put("Department", officer.getDepartment().getName());
             infoEntry.getValues().put("Open Complaints", complaintService.getComplaintsCountForFilter(pgmsComplaintFilter).toString());
             infoEntry.getValues().put("Actions taken", updateService.getUpdatesCountForFilter(pgmsUpdateFilter).toString());
-            infoEntry.getValues().put("Last Login Time", officer.getLastSignedIn().toString());
+            infoEntry.getValues().put("Last Login Time", officer.getLastSignedIn() != null ? officer.getLastSignedIn().toString() : "Never signed in");
 
             infoEntryList.add(infoEntry);
         }

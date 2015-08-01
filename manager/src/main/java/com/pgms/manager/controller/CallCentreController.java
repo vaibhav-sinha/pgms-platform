@@ -2,8 +2,11 @@ package com.pgms.manager.controller;
 
 import com.pgms.manager.security.UserDetail;
 import com.pgms.service.api.VerificationStatusService;
+import com.pgms.shared.json.JsonConverter;
 import com.pgms.shared.model.VerificationStatus;
+import com.pgms.shared.pojo.OfficerVO;
 import com.pgms.shared.pojo.PgmsResponse;
+import com.pgms.shared.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -25,11 +29,39 @@ public class CallCentreController {
     @Autowired
     VerificationStatusService verificationStatusService;
 
+    @Autowired
+    Mapper mapper;
+
+    @Autowired
+    JsonConverter jsonConverter;
+
     @RequestMapping("/dashboard")
-    public ModelAndView dashboard(@AuthenticationPrincipal UserDetail userDetail) {
-        ModelAndView modelAndView = new ModelAndView("cc_dashboard");
-        modelAndView.addObject("user", userDetail);
+    public ModelAndView dashboard(@AuthenticationPrincipal UserDetail userDetail) throws IOException {
+        OfficerVO officerVO = mapper.map(userDetail, OfficerVO.class);
+        ModelAndView modelAndView = new ModelAndView("officer_dashboard");
+        modelAndView.addObject("user", officerVO);
+        modelAndView.addObject("userJson", jsonConverter.toJson(officerVO));
         return modelAndView;
+    }
+
+    @RequestMapping("/partials/inbox")
+    public String partialInbox() {
+        return "partials/inbox";
+    }
+
+    @RequestMapping("/partials/complaint")
+    public String partialComplaint() {
+        return "partials/complaint";
+    }
+
+    @RequestMapping("/partials/timeline")
+    public String partialTimeline(){
+        return "partials/timeline";
+    }
+
+    @RequestMapping("/partials/timeline-element")
+    public String partialTimelineElement(){
+        return "partials/timeline-element";
     }
 
     @RequestMapping("/statusList")
