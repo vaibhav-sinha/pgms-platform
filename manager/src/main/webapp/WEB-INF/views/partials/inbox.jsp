@@ -1,4 +1,37 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <div class="user-panel" ng-if="user.role == 'ROLE_CMO'">
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Filters</h3>
+                </div>
+                <form role="form">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="department">Department</label>
+                            <select id="department" ng-options="department.id as department.name for department in departmentList" ng-model="pgmsFilter.custom.departmentId"  class="form-control"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="createdAfter">Created After</label>
+                            <input type="date" id="createdAfter" ng-model="pgmsFilter.custom.createdAfter"  class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="updatedAfter">Updated After</label>
+                            <input type="date" id="updatedAfter" ng-model="pgmsFilter.custom.updatedAfter"  class="form-control">
+                        </div>
+                        <div class="box-footer">
+                            <button ng-click="selectFilter('custom')" class="btn btn-primary">Search</button>
+                            <button ng-click="removeAllFilter()" class="btn btn-primary">Clear</button>
+                        </div>
+                    </div><!-- /.box-body -->
+                </form>
+            </div><!-- /. box -->
+        </div><!-- /.col -->
+    </section>
+    <!-- /.sidebar -->
+</aside>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -15,20 +48,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">
-            <div class="col-md-3" ng-if="user.role == 'ROLE_CMO'">
-                <div class="box box-solid">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Filters</h3>
-                    </div>
-                    <div class="box-body no-padding">
-                        <label for="department">Department</label><select id="department" ng-options="department.id as department.name for department in departmentList" ng-model="pgmsFilter.custom.departmentId"></select>
-                        <label for="createdAfter">Created After</label><input type="date" id="createdAfter" ng-model="pgmsFilter.custom.createdAfter">
-                        <label for="updatedAfter">Updated After</label><input type="date" id="updatedAfter" ng-model="pgmsFilter.custom.updatedAfter">
-                        <button ng-click="selectFilter('custom')">Search</button>
-                        <button ng-click="removeAllFilter()">Clear</button>
-                    </div><!-- /.box-body -->
-                </div><!-- /. box -->
-            </div><!-- /.col -->
+
             <div class="col-md-3">
                 <div class="box box-solid">
                     <div class="box-header with-border">
@@ -76,7 +96,7 @@
                                     <td class="mailbox-star"><i class="fa text-yellow" ng-class="complaint.urgent ? 'fa-star-o' : 'fa-star'"></i></td>
                                     <td class="mailbox-name">{{complaint.submitter.name}}</td>
                                     <td class="mailbox-subject"><b>Issue</b> - {{complaint.id | limitTo : 40}}</td>
-                                    <td class="mailbox-attachment"></td>
+                                    <td class="mailbox-attachment">{{complaint.complaintStatus.name || complaint.verificationStatus.name ||complaint.reviewStatus.name}}</td>
                                     <td class="mailbox-date">{{complaint.createdOn | timeago}}</td>
                                 </tr>
                                 </tbody>

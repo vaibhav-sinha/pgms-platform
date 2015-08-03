@@ -22,6 +22,7 @@ var shared = app.factory('shared', function() {
 
 var inboxController = app.controller('inboxController', function($scope, $http, $rootScope, $location, shared) {
     $scope.user = user;
+    $scope.searchText = "";
     $scope.currentData = {
         'filter' : 'urgent',
         'complaintList' : null,

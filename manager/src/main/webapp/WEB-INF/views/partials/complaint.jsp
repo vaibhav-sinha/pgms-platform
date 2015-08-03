@@ -37,15 +37,15 @@
                         </div><!-- /.mailbox-read-message -->
                     </div><!-- /.box-body -->
                 </div><!-- /. box -->
-                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-                <section class="content-header">
-                <h1>
-                    Update Complaint
-                </h1>
-                </section>
+    <section class="content-header">
+        <h1>
+            Update Complaint
+        </h1>
+    </section>
     <section class="content">
         <div class="row">
             <div class="col-md-9">
@@ -63,39 +63,39 @@
                     </tab>
                     <tab heading="Change Status">
                         <div class="box-body box">
-                        <div ng-if="user.role == 'ROLE_OFFICER'" class="form-group">
-                            <label for="cStatus">Complaint Status</label>
-                            <select id="cStatus" class="form-control" ng-options="status.name for status in statusList" ng-model="complaintUpdate.selectedComplaintStatus"></select>
-                            <label>Comment</label>
-                            <textarea id="commentStatus" ng-model="update.comment" class="form-control" rows="3" placeholder="Comment here..."></textarea>
-                            <div class="box-footer">
-                                <button class="btn btn-primary" ng-click="postUpdate('COMPLAINT_STATUS_CHANGE')">Save</button>
+                            <div ng-if="user.role == 'ROLE_OFFICER'" class="form-group">
+                                <label for="cStatus">Complaint Status</label>
+                                <select id="cStatus" class="form-control" ng-options="status.name for status in statusList" ng-model="complaintUpdate.selectedComplaintStatus"></select>
+                                <label>Comment</label>
+                                <textarea id="commentStatus" ng-model="update.comment" class="form-control" rows="3" placeholder="Comment here..."></textarea>
+                                <div class="box-footer">
+                                    <button class="btn btn-primary" ng-click="postUpdate('COMPLAINT_STATUS_CHANGE')">Save</button>
+                                </div>
+                            </div>
+                            <div ng-if="user.role == 'ROLE_CALL_CENTRE'" class="form-group">
+                                <label for="vStatus">Verification Status</label>
+                                <select id="vStatus" class="form-control" ng-options="status.name for status in statusList" ng-model="complaintUpdate.selectedVerificationStatus"></select>
+                                <label>Comment</label>
+                                <textarea id="commentStatus" ng-model="update.comment" class="form-control" rows="3" placeholder="Comment here..."></textarea>
+                                <div class="box-footer">
+                                    <button class="btn btn-primary" ng-click="postUpdate('VERIFICATION_STATUS_CHANGE')">Save</button>
+                                </div>
+                            </div>
+                            <div ng-if="user.role == 'ROLE_CMO'" class="form-group">
+                                <label for="rStatus">Review Status</label>
+                                <select id="rStatus" class="form-control" ng-options="status.name for status in statusList" ng-model="complaintUpdate.selectedReviewStatus"></select>
+                                <label>Comment</label>
+                                <textarea id="commentStatus" ng-model="update.comment" class="form-control" rows="3" placeholder="Comment here..."></textarea>
+                                <div class="box-footer">
+                                    <button class="btn btn-primary" ng-click="postUpdate('REVIEW_STATUS_CHANGE')">Save</button>
+                                </div>
                             </div>
                         </div>
-                        <div ng-if="user.role == 'ROLE_CALL_CENTRE'" class="form-group">
-                            <label for="vStatus">Verification Status</label>
-                            <select id="vStatus" class="form-control" ng-options="status.name for status in statusList" ng-model="complaintUpdate.selectedVerificationStatus"></select>
-                            <label>Comment</label>
-                            <textarea id="commentStatus" ng-model="update.comment" class="form-control" rows="3" placeholder="Comment here..."></textarea>
-                            <div class="box-footer">
-                                <button class="btn btn-primary" ng-click="postUpdate('VERIFICATION_STATUS_CHANGE')">Save</button>
-                            </div>
-                        </div>
-                        <div ng-if="user.role == 'ROLE_CMO'" class="form-group">
-                            <label for="rStatus">Review Status</label>
-                            <select id="rStatus" class="form-control" ng-options="status.name for status in statusList" ng-model="complaintUpdate.selectedReviewStatus"></select>
-                            <label>Comment</label>
-                            <textarea id="commentStatus" ng-model="update.comment" class="form-control" rows="3" placeholder="Comment here..."></textarea>
-                            <div class="box-footer">
-                                <button class="btn btn-primary" ng-click="postUpdate('REVIEW_STATUS_CHANGE')">Save</button>
-                            </div>
-                        </div>
-                            </div>
                     </tab>
                     <tab heading="Forward" ng-if = "user.role != 'ROLE_CALL_CENTRE'">
                         <div class="box-body box">
                             <label for="department">Department</label>
-                                <select id="department" class="form-control" ng-options="department.name for department in departmentList" ng-model="complaintUpdate.selectedDepartment"></select>
+                            <select id="department" class="form-control" ng-options="department.name for department in departmentList" ng-model="complaintUpdate.selectedDepartment"></select>
                             <label>Comment</label>
                             <textarea id="commentStatus" ng-model="update.comment" class="form-control" rows="3" placeholder="Comment here..."></textarea>
                             <div class="box-footer">

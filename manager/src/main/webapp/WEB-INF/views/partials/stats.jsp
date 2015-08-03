@@ -12,16 +12,18 @@
         </ol>
     </section>
 
+    <br><br>
+
     <tabset>
         <tab heading="Officer">
-    <stats-table keys="stats.officer.keys" datas = "stats.officer.data"></stats-table>
+            <stats-table keys="stats.officer.keys" datas = "stats.officer.data"></stats-table>
         </tab>
         <tab heading="Location">
             <stats-table keys="stats.location.keys" datas = "stats.location.data"></stats-table>
         </tab>
         <tab heading="Department">
-        <stats-table keys="stats.department.keys" datas = "stats.department.data"></stats-table>
-    </tab>
+            <stats-table keys="stats.department.keys" datas = "stats.department.data"></stats-table>
+        </tab>
     </tabset>
     <!-- Main content -->
     <!-- /.content -->

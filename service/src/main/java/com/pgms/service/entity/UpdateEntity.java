@@ -12,7 +12,7 @@ import java.util.Date;
  */
 @Data
 @Entity
-@Table(name = "update")
+@Table(name = "complaint_update")
 public class UpdateEntity {
 
     @GeneratedValue
@@ -33,43 +33,43 @@ public class UpdateEntity {
     @JoinColumn
     private OfficerEntity officer;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn
     private ComplaintStatusEntity oldComplaintStatus;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn
     private ComplaintStatusEntity newComplaintStatus;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn
     private VerificationStatusEntity oldVerificationStatus;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn
     private VerificationStatusEntity newVerificationStatus;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn
     private ReviewStatusEntity oldReviewStatus;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn
     private ReviewStatusEntity newReviewStatus;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn
     private DepartmentEntity oldDepartment;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn
     private DepartmentEntity newDepartment;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn
     private CategoryEntity oldCategory;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn
     private CategoryEntity newCategory;
 

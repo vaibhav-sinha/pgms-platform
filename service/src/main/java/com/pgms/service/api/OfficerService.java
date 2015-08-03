@@ -16,4 +16,5 @@ public interface OfficerService {
     List<Officer> findOfficersByName(String name, int start, int count);
     List<Officer> getAllActiveOfficer();
     Officer login(String username, String password);
+    Officer findOfficerByUsername(String username);
 }

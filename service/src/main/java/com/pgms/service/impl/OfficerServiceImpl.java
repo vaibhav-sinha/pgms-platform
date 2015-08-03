@@ -83,6 +83,11 @@ public class OfficerServiceImpl implements OfficerService {
         }
     }
 
+    @Override
+    public Officer findOfficerByUsername(String username) {
+        return mapper.map(officerRepository.findByUsername(username), Officer.class);
+    }
+
     private String encrypt(String salt, String password) {
         try {
             String encryptedPassword = Hex.encodeHexString(MessageDigest.getInstance("SHA-256").digest((password + salt).getBytes()));

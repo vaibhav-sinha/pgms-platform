@@ -62,6 +62,12 @@ public class OfficerController {
             pgmsResponse.setMessage("Failed to save officer. Officer is null");
             return pgmsResponse;
         }
+        Officer existing = officerService.findOfficerByUsername(officer.getUsername());
+        if(existing != null) {
+            pgmsResponse.setSuccess(false);
+            pgmsResponse.setMessage("Failed to save officer. Officer with this username already exists");
+            return pgmsResponse;
+        }
         Officer newOfficer = mapper.map(officer, Officer.class);
         newOfficer.setEntryStatus(EntryStatus.ACTIVE);
         newOfficer.setAccountStatus(AccountStatus.ACTIVE);

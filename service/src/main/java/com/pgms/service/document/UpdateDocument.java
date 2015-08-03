@@ -2,7 +2,6 @@ package com.pgms.service.document;
 
 import com.pgms.shared.model.*;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -14,7 +13,7 @@ import java.util.Date;
  * Created by user-1 on 11/7/15.
  */
 @TypeAlias("UpdateDocument")
-@Document(collection = "update")
+@Document(collection = "complaint_update")
 @CompoundIndexes(
         {
                 @CompoundIndex(def = "{'complaint.id' : 1}"),
@@ -22,8 +21,6 @@ import java.util.Date;
 )
 @Data
 public class UpdateDocument {
-    @Id
-    private Long id;
     private EntryStatus entryStatus;
     private Complaint complaint;
     private UserAction userAction;
